@@ -12,11 +12,11 @@ const Footer = () => {
         <div className="flex flex-col items-center md:items-start">
           <div className="flex flex-col items-center md:items-start gap-2">
             <img
-              className="h-10 rounded-full"
+              className="h-14 w-10 rounded-full"
               src={logoImage}
-              alt="FoodShare Logo"
+              alt="BloodAid Logo"
             />
-            <h3 className="text-lg font-bold">FoodShare</h3>
+            <h3 className="text-lg font-bold">BloodAid</h3>
           </div>
           <ul className="space-y-2 mt-4">
             <li>
@@ -26,12 +26,12 @@ const Footer = () => {
             </li>
             <li>
               <Link to="/available-foods" className="hover:text-teal-200">
-                Available Foods
+                About
               </Link>
             </li>
             <li>
               <Link to="/login" className="hover:text-teal-200">
-                Login
+                Services
               </Link>
             </li>
           </ul>
@@ -42,22 +42,22 @@ const Footer = () => {
           <ul className="space-y-2">
             <li>
               <Link to="/" className="hover:text-teal-200">
-                Discussion Forums
+                Events
               </Link>
             </li>
             <li>
               <Link to="/" className="hover:text-teal-200">
-                Events & Workshops
+                Donation Requests
               </Link>
             </li>
             <li>
               <Link to="/" className="hover:text-teal-200">
-                Leaderboard
+                Funding
               </Link>
             </li>
             <li>
               <Link to="/" className="hover:text-teal-200">
-                Resources
+                Login
               </Link>
             </li>
           </ul>
@@ -96,14 +96,14 @@ const Footer = () => {
               href="mailto:food@share.com"
               className="flex items-center hover:text-teal-200"
             >
-              <Mail size={18} className="mr-2" /> food@share.com
+              <Mail size={18} className="mr-2" /> bloodaid@gmail.com
             </a>
           </div>
         </div>
       </div>
 
       <div className="border-t border-[#fa7171] mt-8 pt-4 text-center text-sm">
-        <p>© {currentYear} Food Share. All Rights Reserved.</p>
+        <p>© {currentYear} BloodAid. All Rights Reserved.</p>
         <p className="mt-2">
           <Link to="/" className="hover:text-teal-200 mr-3">
             Privacy Policy

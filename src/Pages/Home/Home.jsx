@@ -1,11 +1,13 @@
 // import Plants from '../../components/Home/Plants'
 
+import Banner from "../../Component/Banner/Banner"
+
 const Home = () => {
   return (
     <div>
       {/* <Plants /> */}
       {/* More components */}
-      <h1>THis is home</h1>
+      <Banner></Banner>
     </div>
   )
 }
