@@ -5,6 +5,7 @@ const Home = () => {
     <div>
       {/* <Plants /> */}
       {/* More components */}
+      <h1>THis is home</h1>
     </div>
   )
 }

@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img src={logo} alt='logo' width='100' height='100' />
+              <img src={logo} alt='logo' width='30' height='30' />
             </Link>
             {/* Dropdown Menu */}
             <div className='relative'>
@@ -74,10 +74,10 @@ const Navbar = () => {
                           Login
                         </Link>
                         <Link
-                          to='/signup'
+                          to='/registration'
                           className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
                         >
-                          Sign Up
+                          Register
                         </Link>
                       </>
                     )}
