@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { FaChevronDown } from "react-icons/fa";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -16,6 +17,8 @@ const Registration = () => {
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
   const [selectedDistrictId, setSelectedDistrictId] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   //Load Districts
   useEffect(() => {
@@ -200,21 +203,39 @@ const Registration = () => {
             </select>
           </SelectWrapper>
 
-          <input
-            name="password"
-            type="password"
-            required
-            placeholder="Password"
-            className="w-full input"
-          />
+          <div className="relative">
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              required
+              placeholder="Password"
+              className="w-full input pr-10"
+            />
 
-          <input
-            name="confirm_password"
-            type="password"
-            required
-            placeholder="Confirm Password"
-            className=" w-full input"
-          />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+            </span>
+          </div>
+
+          <div className="relative">
+            <input
+              name="confirm_password"
+              type={showConfirm ? "text" : "password"}
+              required
+              placeholder="Confirm Password"
+              className="w-full input pr-10"
+            />
+
+            <span
+              onClick={() => setShowConfirm(!showConfirm)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+            >
+              {showConfirm ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+            </span>
+          </div>
 
           <button
             disabled={loading || uploading}
