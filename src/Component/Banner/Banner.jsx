@@ -5,7 +5,7 @@ import heroImage from "../../assets/images/Blood-Hero.jpg";
 const Banner = () => {
   return (
     <section
-      className="relative h-[80vh] flex items-center bg-cover bg-center bg-no-repeat"
+      className="relative h-[80vh] flex items-center bg-cover bg-center bg-no-repeat mx-4 rounded-xl"
       style={{ backgroundImage: `url(${heroImage})` }}
     >
       {/* Dark Overlay */}

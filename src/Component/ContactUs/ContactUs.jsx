@@ -18,7 +18,7 @@ const ContactUs = () => {
 
   return (
     <section
-  className="relative min-h-[70vh] bg-cover bg-center bg-no-repeat mb-10 "
+  className="relative min-h-[70vh] bg-cover bg-center bg-no-repeat  mx-4 rounded-xl"
   style={{ backgroundImage: `url(${contactBg})` }}
 >
   <div className="absolute inset-0 bg-black/60 z-10"></div>

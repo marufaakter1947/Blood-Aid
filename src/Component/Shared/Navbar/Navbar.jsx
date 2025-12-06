@@ -19,7 +19,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed w-full bg-white z-50 shadow">
+    <div className="fixed w-full bg-white z-50 shadow mx-4 rounded">
       <div className="py-1">
         <Container>
           <div className="flex justify-between items-center">
