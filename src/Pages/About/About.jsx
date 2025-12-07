@@ -12,10 +12,13 @@
 // export default About;
 import React from "react";
 import AboutBg from "../../assets/images/about-bg.jpeg";
+import BloodDriveStory from "../../Component/BloodDriveStory/BloodDriveStory";
+import { div } from "framer-motion/client";
 
 const About = () => {
   return (
-    <section
+    <div>
+        <section
       className="relative min-h-[70vh] mx-4 rounded-xl overflow-hidden bg-cover bg-center flex items-center"
       style={{ backgroundImage: `url(${AboutBg})` }}
     >
@@ -41,6 +44,10 @@ const About = () => {
         </div>
       </div>
     </section>
+    <BloodDriveStory></BloodDriveStory>
+    </div>
+
+    
   );
 };
 
