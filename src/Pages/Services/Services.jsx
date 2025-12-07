@@ -5,18 +5,27 @@ import ServicesContent from '../../Component/ServicesContent/ServicesContent';
 
 const Services = () => {
     return (
-        <div className='mt-11'>
-            <section
-                  className="relative min-h-[80vh] mx-4 rounded-xl overflow-hidden bg-cover bg-center flex items-center"
-                  style={{ backgroundImage: `url(${ServicesHeroImg})` }}
+        <div className='pt-15'>
+           <div>
+             <section
+                  className="relative min-h-[70vh] mx-4 rounded-xl overflow-hidden bg-cover bg-center flex items-center"
+                //   style={{ backgroundImage: `url(${ServicesHeroImg})`,
+                // transform: "rotateY(180deg)" }}
                 >
+                  <div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{
+      backgroundImage: `url(${ServicesHeroImg})`,
+      transform: "rotateY(180deg)"
+    }}
+  ></div>
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/50"></div>
             
                 
-                  <div className="relative z-10 w-full max-w-6xl mx-auto px-6 flex justify-end">
-    <div className="max-w-xl text-right">
-      <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+                  <div className="relative z-10 w-full max-w-6xl mx-auto px-6 flex justify-start">
+    <div className="max-w-xl text-left">
+      <h1 className="text-4xl md:text-3xl font-bold text-white leading-tight">
         BloodAid Services
       </h1>
 
@@ -41,6 +50,7 @@ const Services = () => {
   </div>
 
                 </section>
+           </div>
                 <ServicesContent></ServicesContent>
         </div>
     );

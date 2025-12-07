@@ -1,23 +1,10 @@
-// import React from 'react';
-// import AboutBg from '../../assets/images/about-bg.jpeg'
-
-// const About = () => {
-//     return (
-//         <div>
-            
-//         </div>
-//     );
-// };
-
-// export default About;
 import React from "react";
 import AboutBg from "../../assets/images/about-bg.jpeg";
 import BloodDriveStory from "../../Component/BloodDriveStory/BloodDriveStory";
-// import { div } from "framer-motion/client";
 
 const About = () => {
   return (
-    <div>
+    <div className="pt-15">
         <section
       className="relative min-h-[70vh] mx-4 rounded-xl overflow-hidden bg-cover bg-center flex items-center"
       style={{ backgroundImage: `url(${AboutBg})` }}
@@ -28,7 +15,7 @@ const About = () => {
       {/* Content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6">
         <div className="max-w-xl text-left">
-          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+          <h1 className="text-4xl md:text-3xl font-bold text-white leading-tight">
             About BloodAid
           </h1>
 
