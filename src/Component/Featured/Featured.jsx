@@ -66,7 +66,7 @@ const features = [
 const Featured = () => {
   return (
     <section className="py-10 mx-4">
-      <div className="max-w-6xl mx-auto px-6 text-center">
+      <div className="max-w-6xl mx-auto  text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-red-600">
           Why BloodAid?
         </h2>

@@ -19,11 +19,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed w-full bg-white z-50 shadow mx-4 rounded">
-      <div className="py-1">
-        <Container>
-          <div className="flex justify-between items-center">
-            {/* Logo */}
+    <div className="fixed inset-x-0 top-0 z-50">
+  <div className="mx-4 bg-white shadow rounded">
+    <Container>
+      <div className="flex justify-between items-center">
+    
             <Link to="/" className="flex items-center gap-1">
               <img src={logo} alt="logo" width="30" />
               <span className="hidden text-2xl md:block font-bold text-red-600">BloodAid</span>
@@ -33,13 +33,13 @@ const Navbar = () => {
               <NavLink to="/" className={desktopNav}>Home</NavLink>
               <NavLink to="/about" className={desktopNav}>About</NavLink>
               <NavLink to="/services" className={desktopNav}>Services</NavLink>
-              <NavLink to="/events" className={desktopNav}>Events</NavLink>
-              <NavLink to="/donation-requests" className={desktopNav}>Donation Requests</NavLink>
-              {user && <NavLink to="/funding" className={desktopNav}>Funding</NavLink>}
+             <NavLink to="/events" className={desktopNav}>Events</NavLink>
+             <NavLink to="/donation-requests" className={desktopNav}>Donation Requests</NavLink>
+             {user && <NavLink to="/funding" className={desktopNav}>Funding</NavLink>}
             </div>
 
             <div className="relative">
-              <div
+               <div
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center gap-2 border p-2 rounded-full cursor-pointer hover:shadow"
               >
@@ -82,9 +82,10 @@ const Navbar = () => {
               )}
             </div>
           </div>
-        </Container>
-      </div>
-    </div>
+    </Container>
+  </div>
+</div>
+
   );
 };
 
