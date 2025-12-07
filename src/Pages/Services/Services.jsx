@@ -1,6 +1,7 @@
 import React from 'react';
 import ServicesImage from '../../assets/images/services-image.jpg'
 import ServicesHeroImg from '../../assets/images/services-Hero.jpg'
+import ServicesContent from '../../Component/ServicesContent/ServicesContent';
 
 const Services = () => {
     return (
@@ -40,6 +41,7 @@ const Services = () => {
   </div>
 
                 </section>
+                <ServicesContent></ServicesContent>
         </div>
     );
 };

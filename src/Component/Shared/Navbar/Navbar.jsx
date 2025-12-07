@@ -8,7 +8,7 @@ import logo from "../../../assets/images/Blood aid.png";
 
 const desktopNav = ({ isActive }) =>
   isActive
-    ? "text-red-600 border-b-2 border-red-600 pb-1"
+    ? " text-red-600 border-b-2 border-red-600 pb-1"
     : "hover:text-red-600 transition";
 
 const mobileNav = ({ isActive }) =>
@@ -19,7 +19,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-50">
+    <div className="bg-red-50 fixed inset-x-0 top-0 z-50">
   <div className="mx-4 bg-white shadow rounded">
     <Container>
       <div className="flex justify-between items-center">
