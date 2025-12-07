@@ -9,7 +9,6 @@ const BloodDriveStory = () => {
           Dedicated to Life, <br /> The Story of Our Blood Drive Initiative
         </h2>
 
-        {/* Description */}
         <p className="mt-6 text-gray-600 text-lg leading-relaxed text-center">
           BloodAid was created with a single mission — to save lives by making blood donation
           accessible, fast, and reliable. Through community-driven blood drives, we connect
@@ -17,10 +16,8 @@ const BloodDriveStory = () => {
           shortage.
         </p>
 
-        {/* Content Box */}
         <div className="mt-12 bg-white rounded-2xl shadow-sm p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          {/* Left Card */}
           <div className="bg-gray-50 rounded-xl p-6">
             <h3 className="text-2xl font-semibold text-gray-900">
               Have a Question?
@@ -38,12 +35,11 @@ const BloodDriveStory = () => {
 
               <div>
                 <p className="text-sm text-gray-500">Call Us</p>
-                <p className="font-semibold text-gray-900">+880 1765 432100</p>
+                <p className="font-semibold text-gray-900">+8801234567890</p>
               </div>
             </div>
           </div>
 
-          {/* Right Content */}
           <div className="md:col-span-2 flex flex-col justify-between">
             <ul className="space-y-3">
               <li className="flex items-start gap-3">

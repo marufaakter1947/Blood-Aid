@@ -13,7 +13,7 @@
 import React from "react";
 import AboutBg from "../../assets/images/about-bg.jpeg";
 import BloodDriveStory from "../../Component/BloodDriveStory/BloodDriveStory";
-import { div } from "framer-motion/client";
+// import { div } from "framer-motion/client";
 
 const About = () => {
   return (
