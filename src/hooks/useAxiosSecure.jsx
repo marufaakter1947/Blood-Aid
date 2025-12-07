@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import axios from 'axios';
 import useAuth from './useAuth';
 
 const useAxiosSecure = () => {
-  const { user, getToken } = useAuth(); // assuming useAuth has getToken method
+  const {  getToken } = useAuth(); // assuming useAuth has getToken method
 
   // Create axios instance
   const axiosSecure = axios.create({
