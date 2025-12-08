@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router";
+import Swal from "sweetalert2";
+
 
 const statusOptions = ["all", "pending", "inprogress", "done", "canceled"];
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 4;
 
 const MyDonationRequests = () => {
   const { user } = useAuth();
@@ -59,6 +62,49 @@ const MyDonationRequests = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus]);
+
+  const handleDelete = async (id) => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This donation request will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const token = await user.getIdToken();
+
+    await axios.delete(
+      `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    // ✅ UI update
+    setRequests((prev) => prev.filter((r) => r._id !== id));
+
+    Swal.fire({
+      icon: "success",
+      title: "Deleted!",
+      text: "Donation request has been deleted.",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops!",
+      text: "Failed to delete donation request.",
+    });
+  }
+};
+
 
   if (loading) return <div className="p-6">Loading...</div>;
   if (!requests.length) return null;
@@ -125,17 +171,29 @@ const MyDonationRequests = () => {
                     "-"
                   )}
                 </td>
-                <td className="border px-3 py-2 space-x-2">
-                  <button className="text-blue-600 hover:underline">
-                    View
-                  </button>
-                  <button className="text-green-600 hover:underline">
-                    Edit
-                  </button>
-                  <button className="text-red-600 hover:underline">
-                    Delete
-                  </button>
-                </td>
+               <td className="border px-3 py-2 space-x-1">
+  <Link
+    to={`/dashboard/donation-request/${req._id}`}
+    className="text-blue-600 hover:underline"
+  >
+    View
+  </Link>
+
+  <Link
+    to={`/dashboard/edit-request/${req._id}`}
+    className="text-green-600 hover:underline"
+  >
+    Edit
+  </Link>
+
+  <button
+    onClick={() => handleDelete(req._id)}
+    className="text-red-600 hover:underline"
+  >
+    Delete
+  </button>
+</td>
+
               </tr>
             ))}
           </tbody>

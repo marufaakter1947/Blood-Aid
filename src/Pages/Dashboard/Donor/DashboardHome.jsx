@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
+
 
 const DashboardHome = () => {
   const { user } = useAuth();
@@ -39,17 +41,46 @@ const DashboardHome = () => {
     );
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this request?")) return;
+const handleDelete = async (id) => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This donation request will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Yes, delete it!",
+  });
 
+  if (!result.isConfirmed) return;
+
+  try {
     const token = await user.getIdToken();
+
     await axios.delete(
       `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
     );
 
     setRequests((prev) => prev.filter((r) => r._id !== id));
-  };
+
+    Swal.fire({
+      icon: "success",
+      title: "Deleted!",
+      text: "Donation request has been deleted.",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops!",
+      text: "Failed to delete donation request.",
+    });
+  }
+};
 
   return (
     <div className="p-6">
