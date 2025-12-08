@@ -121,7 +121,7 @@ const DashboardHome = () => {
                       </Link>
 
                       <Link
-                        to={`/dashboard/request/${r._id}`}
+                        to={`/dashboard/donation-request/${r._id}`}
                         className="btn btn-xs bg-gray-500 text-white"
                       >
                         View

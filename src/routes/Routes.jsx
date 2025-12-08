@@ -77,7 +77,7 @@ import Home from "../Pages/Home/Home";
 import About from "../Pages/About/About";
 import Services from "../Pages/Services/Services";
 import Events from "../Pages/Events/Events";
-import DonationRequests from "../Pages/DonationRequests/DonationRequests";
+import DonationRequests from "../Pages/DonationRequests/DonationRequestDetails";
 import Funding from "../Pages/Funding/Funding";
 
 // Auth
@@ -93,6 +93,7 @@ import MyDonationRequests from "../Pages/Dashboard/Donor/MyDonationRequests";
 import AllUsers from "../Pages/Dashboard/Admin/AllUsers";
 import AllBloodDonationRequests from "../Pages/Dashboard/Admin/AllBloodDonationRequests";
 import DashboardHome from "../Pages/Dashboard/Donor/DashboardHome";
+import DonationRequestDetails from "../Pages/DonationRequests/DonationRequestDetails";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -134,6 +135,13 @@ export const router = createBrowserRouter([
 
       // Profile
       { path: "profile", element: <Profile /> },
+      {
+  path: "donation-request/:id",
+  element: <PrivateRoute>
+    <DonationRequestDetails />
+  </PrivateRoute>,
+},
+
 
       // Donor Routes
       { path: "create-donation-request", element: <CreateDonationRequest /> },
