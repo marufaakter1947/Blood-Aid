@@ -110,8 +110,8 @@ import AdminMenu from './Menu/AdminMenu';
 import MenuItem from './Menu/MenuItem';
 
 const Sidebar = () => {
-  const { logOut, loading } = useAuth();
-  const role = useRole();
+  const {user, logOut, loading } = useAuth();
+  const role = useRole(user?.email);
   const [isActive, setActive] = useState(false);
 
   const handleToggle = () => setActive(!isActive);
