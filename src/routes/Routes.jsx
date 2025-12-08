@@ -94,6 +94,7 @@ import AllUsers from "../Pages/Dashboard/Admin/AllUsers";
 import AllBloodDonationRequests from "../Pages/Dashboard/Admin/AllBloodDonationRequests";
 import DashboardHome from "../Pages/Dashboard/Donor/DashboardHome";
 import DonationRequestDetails from "../Pages/DonationRequests/DonationRequestDetails";
+import EditDonationRequest from "../Pages/DonationRequests/EditDonationRequest";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -141,6 +142,8 @@ export const router = createBrowserRouter([
     <DonationRequestDetails />
   </PrivateRoute>,
 },
+{ path: "edit-request/:id", element: <EditDonationRequest /> },
+
 
 
       // Donor Routes
