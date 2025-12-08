@@ -87,11 +87,12 @@ import ErrorPage from "../Pages/ErrorPage";
 
 // Dashboard Pages
 import Profile from "../Pages/Dashboard/Common/Profile";
-import Statistics from "../Pages/Dashboard/Common/Statistics";
+// import Statistics from "../Pages/Dashboard/Common/Statistics";
 import CreateDonationRequest from "../Pages/Dashboard/Donor/CreateDonationRequest";
 import MyDonationRequests from "../Pages/Dashboard/Donor/MyDonationRequests";
 import AllUsers from "../Pages/Dashboard/Admin/AllUsers";
 import AllBloodDonationRequests from "../Pages/Dashboard/Admin/AllBloodDonationRequests";
+import DashboardHome from "../Pages/Dashboard/Donor/DashboardHome";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -128,8 +129,8 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      // Dashboard Home (Statistics)
-      { index: true, element: <Statistics /> },
+      // Dashboard Home
+      { index: true, element: <DashboardHome></DashboardHome> },
 
       // Profile
       { path: "profile", element: <Profile /> },
