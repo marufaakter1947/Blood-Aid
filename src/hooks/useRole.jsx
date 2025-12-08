@@ -1,39 +1,60 @@
-// import useAuth from './useAuth';
+// // import useAuth from './useAuth';
 
-// const useRole = () => {
-//   const { user } = useAuth();
+// // const useRole = () => {
+// //   const { user } = useAuth();
 
 
-//   if (!user) return null;
+// //   if (!user) return null;
 
   
-//   return user.role;
+// //   return user.role;
+// // };
+
+// // export default useRole;
+// import { useQuery } from "@tanstack/react-query";
+// // import useAuth from "../Providers/AuthContext";
+// import useAxiosSecure from "./useAxiosSecure";
+// import useAuth from "./useAuth";
+
+// const useRole = () => {
+//   const { user, loading } = useAuth();
+//   const axiosSecure = useAxiosSecure();
+
+//   const {
+//     data: role,
+//     isLoading: roleLoading,
+//     refetch,
+//   } = useQuery({
+//     queryKey: ["userRole", user?.email],
+//     enabled: !loading && !!user?.email, // ✅ important
+//     queryFn: async () => {
+//       const res = await axiosSecure.get("/user/role");
+//       return res.data.role;
+//     },
+//   });
+
+//   return { role, roleLoading, refetch };
 // };
 
 // export default useRole;
-import { useQuery } from "@tanstack/react-query";
-// import useAuth from "../Providers/AuthContext";
-import useAxiosSecure from "./useAxiosSecure";
-import useAuth from "./useAuth";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const useRole = () => {
-  const { user, loading } = useAuth();
-  const axiosSecure = useAxiosSecure();
+const useRole = (email) => {
+  const [role, setRole] = useState(null);
 
-  const {
-    data: role,
-    isLoading: roleLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["userRole", user?.email],
-    enabled: !loading && !!user?.email, // ✅ important
-    queryFn: async () => {
-      const res = await axiosSecure.get("/user/role");
-      return res.data.role;
-    },
-  });
+  useEffect(() => {
+    if (!email) return;
 
-  return { role, roleLoading, refetch };
+    axios
+      .get(`http://localhost:5000/users/role?email=${email}`)
+      .then((res) => {
+        if (res.data.success) setRole(res.data.role);
+      })
+      .catch((err) => console.error(err));
+  }, [email]);
+
+  return role;
 };
 
 export default useRole;

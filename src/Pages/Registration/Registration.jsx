@@ -70,7 +70,7 @@ const Registration = () => {
 
       let avatarUrl = "";
 
-      // Upload image if selected
+      // Upload image
       if (avatarFile) {
         const formData = new FormData();
         formData.append("image", avatarFile);
@@ -83,22 +83,22 @@ const Registration = () => {
         avatarUrl = imgRes.data.data.display_url;
       }
 
-      // 1️⃣ Firebase: create user with email/password
+      //Firebase: create user with email/password
       const userCredential = await createUser(email, password);
 
-      // 2️⃣ Update user profile with name & avatar
+      //Update user profile with name & avatar
       if (name || avatarUrl) {
         await updateUserProfile(name, avatarUrl);
       }
 
-      // 3️⃣ Send extra data to backend (MongoDB)
+      //Send extra data
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
         name,
         email,
         role: "donor",
         avatar: avatarUrl,
         bloodGroup: selectedBlood,
-        districtId: selectedDistrict,
+        district: districts.find((d) => String(d.id) === String(selectedDistrict))?.name,
         upazila: selectedUpazila,
         createdAt: new Date(),
       });
