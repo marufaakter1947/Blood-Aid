@@ -15,30 +15,22 @@ const Registration = () => {
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
-
   const [selectedBlood, setSelectedBlood] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazila, setSelectedUpazila] = useState("");
-
   const [uploading, setUploading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  /* Load Districts */
+  // Load districts & upazilas
   useEffect(() => {
     fetch("/districts.json")
       .then((res) => res.json())
       .then((json) => {
         const table = json.find((item) => item.type === "table");
-        const sorted = [...table.data].sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
-        setDistricts(sorted);
+        setDistricts(table.data.sort((a, b) => a.name.localeCompare(b.name)));
       });
-  }, []);
 
-  /* Load Upazilas */
-  useEffect(() => {
     fetch("/upazilas.json")
       .then((res) => res.json())
       .then((json) => {
@@ -47,13 +39,13 @@ const Registration = () => {
       });
   }, []);
 
-  /* Filter Upazilas */
   useEffect(() => {
     if (selectedDistrict) {
-      const filtered = upazilas.filter(
-        (upa) => String(upa.district_id) === String(selectedDistrict)
+      setFilteredUpazilas(
+        upazilas.filter(
+          (upa) => String(upa.district_id) === String(selectedDistrict)
+        )
       );
-      setFilteredUpazilas(filtered);
     } else {
       setFilteredUpazilas([]);
     }
@@ -67,7 +59,7 @@ const Registration = () => {
     const email = form.email.value;
     const password = form.password.value;
     const confirmPassword = form.confirm_password.value;
-    const image = form.avatar.files[0];
+    const avatarFile = form.avatar.files[0];
 
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match");
@@ -76,38 +68,46 @@ const Registration = () => {
     try {
       setUploading(true);
 
-      const imageData = new FormData();
-      imageData.append("image", image);
+      let avatarUrl = "";
 
-      const imgRes = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
-        imageData
-      );
+      // Upload image if selected
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append("image", avatarFile);
 
-      const avatar = imgRes.data.data.display_url;
+        const imgRes = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
+          formData
+        );
 
-      await createUser(email, password);
-      await updateUserProfile(name, avatar);
+        avatarUrl = imgRes.data.data.display_url;
+      }
 
-      const userInfo = {
+      // 1️⃣ Firebase: create user with email/password
+      const userCredential = await createUser(email, password);
+
+      // 2️⃣ Update user profile with name & avatar
+      if (name || avatarUrl) {
+        await updateUserProfile(name, avatarUrl);
+      }
+
+      // 3️⃣ Send extra data to backend (MongoDB)
+      await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
         name,
         email,
-        avatar,
-        bloodGroup: selectedBlood,
-        district:
-          districts.find((d) => d.id === selectedDistrict)?.name || "",
-        upazila: selectedUpazila,
         role: "donor",
-        status: "active",
-      };
+        avatar: avatarUrl,
+        bloodGroup: selectedBlood,
+        districtId: selectedDistrict,
+        upazila: selectedUpazila,
+        createdAt: new Date(),
+      });
 
-      await axios.post("http://localhost:5000/users", userInfo);
-
-      toast.success("Registration Successful");
+      toast.success("Registration Successful!");
       navigate("/");
-    } catch (error) {
-      console.error(error);
-      toast.error("Registration failed");
+    } catch (err) {
+      console.error(err);
+      toast.error("Registration failed. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -128,11 +128,26 @@ const Registration = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          <input name="name" required placeholder="Full Name" className="w-full input" />
-          <input name="email" type="email" required placeholder="Email" className="w-full input" />
-          <input name="avatar" type="file" accept="image/*" required className="w-full input" />
+          <input
+            name="name"
+            required
+            placeholder="Full Name"
+            className="w-full input"
+          />
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="Email"
+            className="w-full input"
+          />
+          <input
+            name="avatar"
+            type="file"
+            accept="image/*"
+            className="w-full input"
+          />
 
-          {/* Blood Group */}
           <SelectWrapper>
             <select
               value={selectedBlood}
@@ -142,12 +157,13 @@ const Registration = () => {
             >
               <option value="">Select Blood Group</option>
               {bloodGroups.map((bg) => (
-                <option key={bg} value={bg}>{bg}</option>
+                <option key={bg} value={bg}>
+                  {bg}
+                </option>
               ))}
             </select>
           </SelectWrapper>
 
-          {/* District */}
           <SelectWrapper>
             <select
               value={selectedDistrict}
@@ -159,31 +175,35 @@ const Registration = () => {
               className="w-full input appearance-none cursor-pointer"
             >
               <option value="">Select District</option>
-              {districts.map((dist) => (
-                <option key={dist.id} value={dist.id}>{dist.name}</option>
+              {districts.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
               ))}
             </select>
           </SelectWrapper>
 
-          {/* Upazila */}
           <SelectWrapper>
             <select
               value={selectedUpazila}
               onChange={(e) => setSelectedUpazila(e.target.value)}
               required
               disabled={!selectedDistrict}
-              className={`w-full input appearance-none cursor-pointer
-                ${!selectedDistrict && "bg-gray-100 text-gray-400 cursor-not-allowed"}
-              `}
+              className={`w-full input appearance-none cursor-pointer ${
+                !selectedDistrict
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : ""
+              }`}
             >
               <option value="">Select Upazila</option>
               {filteredUpazilas.map((upa) => (
-                <option key={upa.id} value={upa.name}>{upa.name}</option>
+                <option key={upa.id} value={upa.name}>
+                  {upa.name}
+                </option>
               ))}
             </select>
           </SelectWrapper>
 
-          {/* Password */}
           <div className="relative">
             <input
               name="password"
@@ -192,12 +212,14 @@ const Registration = () => {
               placeholder="Password"
               className="w-full input pr-10"
             />
-            <span onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+            >
               {showPassword ? <FiEyeOff /> : <FiEye />}
             </span>
           </div>
 
-          {/* Confirm Password */}
           <div className="relative">
             <input
               name="confirm_password"
@@ -206,26 +228,30 @@ const Registration = () => {
               placeholder="Confirm Password"
               className="w-full input pr-10"
             />
-            <span onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
+            <span
+              onClick={() => setShowConfirm(!showConfirm)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+            >
               {showConfirm ? <FiEyeOff /> : <FiEye />}
             </span>
           </div>
 
           <button
             disabled={loading || uploading}
-            className="w-full bg-linear-to-r from-[#BC1823] to-[#66080e] text-white py-2 rounded cursor-pointer"
+            className="w-full bg-red-600 text-white py-2 rounded cursor-pointer"
           >
             {uploading ? "Creating Account..." : "Register"}
           </button>
-         <p className="text-center font-semibold mt-2">
-              Already have an account?{" "}
-              <Link
-                className="text-[#BC1823] hover:text-red-900 hover:underline cursor-pointer"
-                to="/login"
-              >
-                Login
-              </Link>
-            </p>
+
+          <p className="text-center font-semibold mt-2">
+            Already have an account?{" "}
+            <Link
+              className="text-red-600 hover:text-red-900 hover:underline cursor-pointer"
+              to="/login"
+            >
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>
