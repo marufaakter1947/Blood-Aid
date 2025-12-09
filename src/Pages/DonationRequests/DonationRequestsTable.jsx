@@ -4,16 +4,23 @@ import { toast } from "react-hot-toast";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import { FiMoreVertical } from "react-icons/fi";
 
 const statusOptions = ["all", "pending", "inprogress", "done", "canceled"];
+
 const ITEMS_PER_PAGE = 4;
 
-const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests" }) => {
+const DonationRequestsTable = ({
+  fetchAll = false,
+  title = "My Donation Requests",
+  maxItems = null, // new prop to limit number of requests
+}) => {
   const { user } = useAuth();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [dropdownOpen, setDropdownOpen] = useState(null);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -21,12 +28,20 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
         const token = await user.getIdToken();
         const endpoint = fetchAll
           ? `${import.meta.env.VITE_API_URL}/donation-requests`
-          : `${import.meta.env.VITE_API_URL}/donation-requests/my?email=${user.email}`;
+          : `${import.meta.env.VITE_API_URL}/donation-requests/my`;
 
         const res = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setRequests(res.data);
+
+        let data = res.data;
+
+        // Limit items if maxItems is provided
+        if (maxItems) {
+          data = data.slice(0, maxItems);
+        }
+
+        setRequests(data);
       } catch (err) {
         console.error(err);
         toast.error("Failed to load donation requests");
@@ -36,15 +51,13 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
     };
 
     if (user?.email) fetchRequests();
-  }, [user, fetchAll]);
+  }, [user, fetchAll, maxItems]);
 
-  // Filter requests
   const filteredRequests =
     filterStatus === "all"
       ? requests
       : requests.filter((req) => req.status === filterStatus);
 
-  // Pagination
   const totalPages = Math.ceil(filteredRequests.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentItems = filteredRequests.slice(
@@ -54,6 +67,7 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
 
   useEffect(() => setCurrentPage(1), [filterStatus]);
 
+  // Delete
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -69,9 +83,13 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
 
     try {
       const token = await user.getIdToken();
-      await axios.delete(`${import.meta.env.VITE_API_URL}/donation-requests/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setRequests((prev) => prev.filter((r) => r._id !== id));
 
@@ -91,8 +109,30 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
     }
   };
 
+  // Update Status
+  const handleStatusUpdate = async (id, newStatus) => {
+    try {
+      const token = await user.getIdToken();
+      const res = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/donation-requests/update-status/${id}`,
+        { status: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.data.success) {
+        setRequests((prev) =>
+          prev.map((r) => (r._id === id ? { ...r, status: newStatus } : r))
+        );
+        toast.success(`Donation marked as ${newStatus}`);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update status");
+    }
+  };
+
   if (loading) return <div className="p-6">Loading...</div>;
-  if (!requests.length) return <div className="p-6">No donation requests found.</div>;
+  if (!requests.length) return null; // hide if no requests
 
   return (
     <div className="p-6">
@@ -113,8 +153,8 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full border">
-          <thead className="bg-gray-100 text-sm">
+        <table className="min-w-full border text-center text-sm">
+          <thead className="bg-gray-100">
             <tr>
               {fetchAll && <th className="border px-3 py-2">Requester</th>}
               <th className="border px-3 py-2">Recipient</th>
@@ -130,92 +170,134 @@ const DonationRequestsTable = ({ fetchAll = false, title = "My Donation Requests
 
           <tbody>
             {currentItems.map((req) => (
-              <tr key={req._id} className="text-sm text-center">
-                {fetchAll && <td className="border px-3 py-2">{req.requesterName}</td>}
+              <tr key={req._id} className="text-sm">
+                {fetchAll && (
+                  <td className="border px-3 py-2">{req.requesterName}</td>
+                )}
                 <td className="border px-3 py-2">{req.recipientName}</td>
                 <td className="border px-3 py-2">
                   {req.recipientDistrict}, {req.recipientUpazila}
                 </td>
                 <td className="border px-3 py-2">{req.donationDate}</td>
                 <td className="border px-3 py-2">{req.donationTime}</td>
-                <td className="border px-3 py-2 font-semibold">{req.bloodGroup}</td>
+                <td className="border px-3 py-2 font-semibold">
+                  {req.bloodGroup}
+                </td>
                 <td className="border px-3 py-2 capitalize">{req.status}</td>
                 <td className="border px-3 py-2">
                   {req.status === "inprogress" && req.donorInfo ? (
                     <>
                       <p>{req.donorInfo.name}</p>
-                      <p className="text-xs text-gray-500">{req.donorInfo.email}</p>
+                      <p className="text-xs text-gray-500">
+                        {req.donorInfo.email}
+                      </p>
                     </>
                   ) : (
                     "-"
                   )}
                 </td>
-                <td className="border px-3 py-2 space-x-1">
-                  <Link
-                    to={`/dashboard/donation-request/${req._id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    View
-                  </Link>
-
-                  <Link
-                    to={`/dashboard/edit-request/${req._id}`}
-                    className="text-green-600 hover:underline"
-                  >
-                    Edit
-                  </Link>
-
+                <td className="border px-3 py-2 relative">
                   <button
-                    onClick={() => handleDelete(req._id)}
-                    className="text-red-600 hover:underline"
+                    onClick={() =>
+                      setDropdownOpen(dropdownOpen === req._id ? null : req._id)
+                    }
+                    className="p-1 hover:bg-gray-100 rounded"
                   >
-                    Delete
+                    <FiMoreVertical />
                   </button>
+
+                  {dropdownOpen === req._id && (
+                    <div className="absolute right-0 mt-1 w-36 bg-white border shadow rounded z-10 flex flex-col text-left">
+                      <Link
+                        to={`/dashboard/donation-request/${req._id}`}
+                        className="px-3 py-2 hover:bg-gray-100"
+                      >
+                        View
+                      </Link>
+
+                      <Link
+                        to={`/dashboard/edit-request/${req._id}`}
+                        className="px-3 py-2 hover:bg-gray-100"
+                      >
+                        Edit
+                      </Link>
+
+                      <button
+                        onClick={() => handleDelete(req._id)}
+                        className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                      >
+                        Delete
+                      </button>
+
+                      {req.status === "inprogress" && (
+                        <>
+                          <button
+                            onClick={() => handleStatusUpdate(req._id, "done")}
+                            className="px-3 py-2 text-green-600 hover:bg-gray-100 text-left"
+                          >
+                            Done
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(req._id, "canceled")
+                            }
+                            className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {/* Pagination */}
+        {!maxItems && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-6">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+              className={`px-3 py-1 rounded border ${
+                currentPage === 1 ? "opacity-40 cursor-not-allowed" : ""
+              }`}
+            >
+              Prev
+            </button>
+
+            {[...Array(totalPages).keys()].map((num) => {
+              const page = num + 1;
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-1 rounded border ${
+                    currentPage === page
+                      ? "bg-red-600 text-white"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              className={`px-3 py-1 rounded border ${
+                currentPage === totalPages
+                  ? "opacity-40 cursor-not-allowed"
+                  : ""
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
-
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-6">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => p - 1)}
-            className={`px-3 py-1 rounded border ${
-              currentPage === 1 ? "opacity-40 cursor-not-allowed" : ""
-            }`}
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages).keys()].map((num) => {
-            const page = num + 1;
-            return (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-3 py-1 rounded border ${
-                  currentPage === page ? "bg-red-600 text-white" : "hover:bg-gray-100"
-                }`}
-              >
-                {page}
-              </button>
-            );
-          })}
-
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((p) => p + 1)}
-            className={`px-3 py-1 rounded border ${
-              currentPage === totalPages ? "opacity-40 cursor-not-allowed" : ""
-            }`}
-          >
-            Next
-          </button>
-        </div>
-      )}
     </div>
   );
 };

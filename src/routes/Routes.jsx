@@ -92,9 +92,10 @@ import CreateDonationRequest from "../Pages/Dashboard/Donor/CreateDonationReques
 import MyDonationRequests from "../Pages/Dashboard/Donor/MyDonationRequests";
 import AllUsers from "../Pages/Dashboard/Admin/AllUsers";
 import AllBloodDonationRequests from "../Pages/Dashboard/Admin/AllBloodDonationRequests";
-import DashboardHome from "../Pages/Dashboard/Donor/DashboardHome";
 import DonationRequestDetails from "../Pages/DonationRequests/DonationRequestDetails";
 import EditDonationRequest from "../Pages/DonationRequests/EditDonationRequest";
+// import DashboardIndex from "../Pages/Dashboard/DashboardIndex";
+import DashboardIndex from '../Pages/Dashboard/DashboardIndex'
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -132,7 +133,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       // Dashboard Home
-      { index: true, element: <DashboardHome></DashboardHome> },
+      { index: true, element: <DashboardIndex></DashboardIndex> },
 
       // Profile
       { path: "profile", element: <Profile /> },
