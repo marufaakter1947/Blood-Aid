@@ -16,6 +16,8 @@ const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+
 
   /* ---------------- Register ---------------- */
   const createUser = async (email, password) => {
@@ -60,13 +62,22 @@ const AuthProvider = ({ children }) => {
 
   /* ---------------- Auth State Observer ---------------- */
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser || null);
-      setLoading(false);
-    });
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    setUser(currentUser || null);
 
-    return () => unsubscribe();
-  }, []);
+    if (currentUser) {
+      const jwt = await currentUser.getIdToken();
+      setToken(jwt);
+    } else {
+      setToken(null);
+    }
+
+    setLoading(false);
+  });
+
+  return () => unsubscribe();
+}, []);
+
 
   const authInfo = {
     user,
@@ -77,6 +88,7 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
     setUser,
     setLoading,
+    token,
   };
 
   return (

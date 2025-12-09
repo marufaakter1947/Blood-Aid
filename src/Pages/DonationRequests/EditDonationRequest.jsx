@@ -3,11 +3,13 @@ import { useParams, useNavigate } from "react-router";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import { getAuth } from "firebase/auth";
 
 const EditDonationRequest = () => {
   const { id } = useParams(); // donation request ID
   const { user } = useAuth();
   const navigate = useNavigate();
+  const auth = getAuth();
 
   const [requestData, setRequestData] = useState({
     recipientName: "",
@@ -27,7 +29,9 @@ const EditDonationRequest = () => {
   useEffect(() => {
     const fetchRequest = async () => {
       try {
-        const token = await user.getIdToken();
+        // const auth = getAuth();
+const token = await auth.currentUser.getIdToken();
+
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
           {
@@ -44,7 +48,7 @@ const EditDonationRequest = () => {
     };
 
     if (user) fetchRequest();
-  }, [id, user]);
+  }, [id, user,auth]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,7 +65,7 @@ delete cleanedData.status;
 delete cleanedData.donorInfo;
 
     try {
-      const token = await user.getIdToken();
+      const token = await auth.currentUser.getIdToken();
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
         cleanedData,

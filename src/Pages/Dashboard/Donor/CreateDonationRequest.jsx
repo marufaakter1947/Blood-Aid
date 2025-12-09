@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { FaChevronDown } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
+import { getAuth } from "firebase/auth";
+
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -96,7 +98,10 @@ const CreateDonationRequest = () => {
         message: formData.message,
         status: "pending", // default
       };
-      const token = await user.getIdToken();
+      const auth = getAuth();
+const firebaseUser = auth.currentUser;
+const token = await firebaseUser.getIdToken();
+
 
       await axios.post(`${import.meta.env.VITE_API_URL}/donation-requests`, requestData,
         {
