@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaUsers, FaDonate, FaHandHoldingMedical } from "react-icons/fa";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-const AdminDashboardHome = () => {
+const VolunterDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
 
    const [totalUsers, setTotalUsers] = useState(0);
@@ -12,38 +12,41 @@ const AdminDashboardHome = () => {
 
    useEffect(() => {
     const fetchStats = async () => {
-      try {
-        //Users
-        const usersRes = await axiosSecure.get("/admin/users");
-        setTotalUsers(usersRes.data.length);
+  try {
+    const userRes = await axiosSecure.get("/users/role?email=me");
+    const role = userRes.data.role;
 
-        //Donation Requests
-        const requestsRes = await axiosSecure.get("/admin/donation-requests/count");
-        setTotalRequests(requestsRes.data.count);
+    if (role === "admin") {
+      const usersRes = await axiosSecure.get("/admin/users");
+      setTotalUsers(usersRes.data.length);
 
-        // Funds
-        const fundsRes = await axiosSecure.get("/fundings/total");
-        setTotalFunds(fundsRes.data.total);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+      const requestsRes = await axiosSecure.get("/admin/donation-requests/count");
+      setTotalRequests(requestsRes.data.count);
+
+      const fundsRes = await axiosSecure.get("/fundings/total");
+      setTotalFunds(fundsRes.data.total);
+    } 
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
     fetchStats();
   }, [axiosSecure]);
 
   return (
     <div className="p-6 space-y-6">
+    
       <div className="bg-white shadow rounded p-6">
         <h2 className="text-2xl font-bold text-red-600">
-          Welcome, Admin! 🏠
+          Welcome, Volunteer! 
         </h2>
         <p className="mt-2 text-gray-600">
-          Here's a quick overview of your Blood Aid platform.
+          Here’s a quick overview of your Blood Aid platform.
         </p>
       </div>
 
-      {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Total Users */}
         <div className="bg-white shadow p-6 rounded flex items-center gap-4">
@@ -62,8 +65,7 @@ const AdminDashboardHome = () => {
             <p className="text-gray-600">Blood Donation Requests</p>
           </div>
         </div>
-
-        {/* Total Funds */}
+{/* Funds */}
         <div className="bg-white shadow p-6 rounded flex items-center gap-4">
           <FaDonate className="text-red-600 text-3xl" />
           <div>
@@ -76,4 +78,4 @@ const AdminDashboardHome = () => {
   );
 };
 
-export default AdminDashboardHome;
+export default VolunterDashboardHome;
