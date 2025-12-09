@@ -22,10 +22,10 @@ const FundingSuccess = () => {
         .then((data) => {
           if (data.success) {
             toast.success("Payment successful!");
-            navigate("/funding"); // Redirect to funding page
+            setTimeout(() => navigate("/funding"), 1500);  // Redirect to funding page
           } else {
             toast.error("Payment verification failed");
-            navigate("/funding");
+            setTimeout(() => navigate("/funding"), 1500);
           }
         })
         .catch(() => {

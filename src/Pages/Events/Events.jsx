@@ -84,7 +84,7 @@ const Events = () => {
           />
 
           {/* Content */}
-          <div className="p-5 flex flex-col flex-grow">
+          <div className="p-5 flex flex-col grow">
             <h3 className="text-lg font-semibold text-gray-800">
               {event.title}
             </h3>
@@ -93,7 +93,7 @@ const Events = () => {
             <p className="text-sm text-gray-500">{event.time}</p>
             <p className="text-sm text-gray-500 mb-2">{event.location}</p>
 
-            <p className="text-sm text-gray-600 flex-grow">
+            <p className="text-sm text-gray-600 grow">
               {event.description}
             </p>
 

@@ -31,7 +31,7 @@ const Funding = () => {
     const params = new URLSearchParams(window.location.search);
     const session_id = params.get("session_id");
     if (session_id) {
-      
+
       fetch(`${import.meta.env.VITE_API_URL}/api/funding/confirm-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,10 +54,15 @@ const Funding = () => {
   const totalFund = funds.reduce((sum, f) => sum + f.amount, 0);
 
   const handleGiveFund = async () => {
-    if (!amount || isNaN(amount) || Number(amount) <= 0) {
-      toast.error("Please enter a valid amount");
-      return;
-    }
+    const amt = Number(amount);
+  if (!amt || amt <= 0) {
+    toast.error("Please enter a valid amount");
+    return;
+  }
+  if (amt < 60) { 
+    toast.error("Amount must be at least 60 BDT");
+    return;
+  }
 
     try {
       const response = await fetch(
