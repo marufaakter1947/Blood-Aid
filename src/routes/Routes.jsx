@@ -96,6 +96,7 @@ import DonationRequestDetails from "../Pages/DonationRequests/DonationRequestDet
 import EditDonationRequest from "../Pages/DonationRequests/EditDonationRequest";
 // import DashboardIndex from "../Pages/Dashboard/DashboardIndex";
 import DashboardIndex from '../Pages/Dashboard/DashboardIndex'
+import DonationRequest from "../Pages/DonationRequests/DonationRequest";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -108,7 +109,13 @@ export const router = createBrowserRouter([
       { path: "/about", element: <About /> },
       { path: "/services", element: <Services /> },
       { path: "/events", element: <Events /> },
-      { path: "/donation-requests", element: <DonationRequests /> },
+      { path: "/donation-requests", element: <DonationRequest /> },
+      {
+  path: "donation-requests/:id",
+  element: <PrivateRoute>
+    <DonationRequestDetails />
+  </PrivateRoute>,
+},
       { path: "/login", element: <Login /> },
       { path: "/registration", element: <Registration /> },
 
@@ -138,7 +145,7 @@ export const router = createBrowserRouter([
       // Profile
       { path: "profile", element: <Profile /> },
       {
-  path: "donation-request/:id",
+  path: "donation-requests/:id",
   element: <PrivateRoute>
     <DonationRequestDetails />
   </PrivateRoute>,
