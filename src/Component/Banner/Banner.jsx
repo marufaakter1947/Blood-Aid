@@ -1,8 +1,13 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import heroImage from "../../assets/images/Blood-Hero.jpg";
 
 const Banner = () => {
+   const navigate = useNavigate();
+
+  const handleFindDonorClick = () => {
+    navigate("/search-donor");
+  };
   return (
     <section
       className="relative h-[70vh] flex items-center bg-cover bg-center bg-no-repeat mx-4 rounded-xl overflow-hidden"
@@ -31,7 +36,7 @@ const Banner = () => {
           <div className="mt-6 flex flex-col  md:flex-row gap-10 md:gap-4 justify-center md:justify-start">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
-                to="/donation-requests"
+               onClick={handleFindDonorClick}
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition"
               >
                 Find Donors

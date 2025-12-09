@@ -13,34 +13,8 @@ const DonationRequestDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const [role, setRole] = useState(null);
 
-
-
-
-
-  // useEffect(() => {
-  //   const loadRequest = async () => {
-  //     try {
-  //       const token = await user.getIdToken();
-  //       const res = await axios.get(
-  //         `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       setRequest(res.data);
-  //     } catch (err) {
-  //       toast.error("Failed to load request");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   loadRequest();
-  // }, [id, user]);
 useEffect(() => {
-  if (!id || !user) return; // ✅ STOP if id or user missing
+  if (!id || !user) return; 
 
   const loadRequest = async () => {
     try {
@@ -83,30 +57,6 @@ useEffect(() => {
   return <div className="p-6 text-center">Invalid request</div>;
 }
 
-  // const handleConfirmDonation = async () => {
-  //   try {
-  //     const token = await user.getIdToken();
-
-  //     await axios.patch(
-  //       `${import.meta.env.VITE_API_URL}/donation-requests/confirm/${id}`,
-  //       {
-  //         donorName: user.displayName,
-  //         donorEmail: user.email,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     toast.success("Donation confirmed!");
-  //     setOpenModal(false);
-  //     setRequest({ ...request, status: "inprogress" });
-  //   } catch (err) {
-  //     toast.error("Failed to confirm donation");
-  //   }
-  // };
   const handleConfirmDonation = async () => {
   try {
     const token = await user.getIdToken();
@@ -139,7 +89,7 @@ useEffect(() => {
   
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-white rounded shadow">
+    <div className="p-6 max-w-3xl mx-auto bg-white rounded shadow mt-20">
       <h2 className="text-2xl font-bold text-red-600 mb-4">
         Donation Request Details
       </h2>

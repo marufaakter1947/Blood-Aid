@@ -1,46 +1,13 @@
-// import useAuth from "../../../hooks/useAuth";
-// import DonationRequestsTable from "../../DonationRequests/DonationRequestsTable";
-// import { Link } from "react-router";
-
-// const DashboardHome = () => {
-//   const { user } = useAuth();
-
-//   if (!user) return null;
-
-//   return (
-//     <div className="p-6">
-//       <h2 className="text-2xl font-bold mb-6">
-//         Welcome, <span className="text-red-600">{user.displayName}</span> 👋
-//       </h2>
-
-     
-//       <DonationRequestsTable
-//         fetchAll={false}
-//         title="My Recent Donation Requests"
-//         maxItems={3}
-//       />
-
-//       <div className="text-right mt-4">
-//         <Link
-//           to="/dashboard/my-donation-requests"
-//           className="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-medium"
-//         >
-//           View My All Requests →
-//         </Link>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default DashboardHome;
 import useAuth from "../../../hooks/useAuth";
 import DonationRequestsTable from "../../DonationRequests/DonationRequestsTable";
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+// import axios from "axios";
 
 const DashboardHome = () => {
   const { user } = useAuth();
+   const axiosSecure = useAxiosSecure();
   const [recentRequests, setRecentRequests] = useState([]);
 
   useEffect(() => {
@@ -48,13 +15,8 @@ const DashboardHome = () => {
 
     const fetchRecentRequests = async () => {
       try {
-        const token = await user.getIdToken();
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/donation-requests/my`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        // const token = await user.getIdToken();
+         const res = await axiosSecure.get("/donation-requests/my");
 
         // Sort by most recent and get maximum 3
         const sorted = res.data.sort(
@@ -67,7 +29,7 @@ const DashboardHome = () => {
     };
 
     fetchRecentRequests();
-  }, [user]);
+  }, [user,axiosSecure]);
 
   if (!user) return null;
 
