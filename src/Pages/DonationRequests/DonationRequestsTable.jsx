@@ -7,8 +7,6 @@ import useAuth from "../../hooks/useAuth";
 import { FiMoreVertical } from "react-icons/fi";
 import { getAuth } from "firebase/auth";
 
-
-
 const statusOptions = ["all", "pending", "inprogress", "done", "canceled"];
 
 const ITEMS_PER_PAGE = 4;
@@ -26,11 +24,11 @@ const DonationRequestsTable = ({
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [role, setRole] = useState(null);
 
-const getToken = async () => {
-  const auth = getAuth();
-  if (!auth.currentUser) return null;
-  return await auth.currentUser.getIdToken();
-};
+  const getToken = async () => {
+    const auth = getAuth();
+    if (!auth.currentUser) return null;
+    return await auth.currentUser.getIdToken();
+  };
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -64,20 +62,17 @@ const getToken = async () => {
   }, [user, fetchAll, maxItems]);
 
   useEffect(() => {
-  if (!user?.email) return;
+    if (!user?.email) return;
 
-  
+    const fetchRole = async () => {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/role?email=${user.email}`
+      );
+      setRole(res.data.role);
+    };
 
-
-  const fetchRole = async () => {
-    const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/users/role?email=${user.email}`
-    );
-    setRole(res.data.role);
-  };
-
-  fetchRole();
-}, [user]);
+    fetchRole();
+  }, [user]);
 
   const filteredRequests =
     filterStatus === "all"
@@ -225,67 +220,72 @@ const getToken = async () => {
                   )}
                 </td>
                 <td className="border px-3 py-2 relative">
-  <button
-    onClick={() =>
-      setDropdownOpen(dropdownOpen === req._id ? null : req._id)
-    }
-    className="p-1 hover:bg-gray-100 rounded"
-  >
-    <FiMoreVertical />
-  </button>
+                  <button
+                    onClick={() =>
+                      setDropdownOpen(dropdownOpen === req._id ? null : req._id)
+                    }
+                    className="p-1 hover:bg-gray-100 rounded"
+                  >
+                    <FiMoreVertical />
+                  </button>
 
-  {dropdownOpen === req._id && (
-    <div className="absolute right-0 mt-1 w-36 bg-white border shadow rounded z-10 flex flex-col text-left">
-      
-      {/* View allowed for all */}
-      <Link
-       to={`/donation-requests/${req._id}`}
-        className="px-3 py-2 hover:bg-gray-100"
-      >
-        View
-      </Link>
+                  {dropdownOpen === req._id && (
+                    <div className="absolute right-0 mt-1 w-36 bg-white border shadow rounded z-10 flex flex-col text-left">
+                      {/* View → Everyone */}
+                      <Link
+                        to={`/donation-requests/${req._id}`}
+                        className="px-3 py-2 hover:bg-gray-100"
+                      >
+                        View
+                      </Link>
 
-      {/* Admin only */}
-      {role === "admin" && (
-        <>
-          <Link
-            to={`/dashboard/edit-request/${req._id}`}
-            className="px-3 py-2 hover:bg-gray-100"
-          >
-            Edit
-          </Link>
+                      {/* Admin + Donor → Edit & Delete */}
+                      {(role === "admin" || role === "donor") && (
+                        <>
+                          <Link
+                            to={`/dashboard/edit-request/${req._id}`}
+                            className="px-3 py-2 hover:bg-gray-100"
+                          >
+                            Edit
+                          </Link>
 
-          <button
-            onClick={() => handleDelete(req._id)}
-            className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
-          >
-            Delete
-          </button>
-        </>
-      )}
+                          <button
+                            onClick={() => handleDelete(req._id)}
+                            className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
 
-      {/* Admin + Volunteer can update status */}
-      {req.status === "inprogress" &&
-        (role === "admin" || role === "volunteer") && (
-          <>
-            <button
-              onClick={() => handleStatusUpdate(req._id, "done")}
-              className="px-3 py-2 text-green-600 hover:bg-gray-100 text-left"
-            >
-              Done
-            </button>
-            <button
-              onClick={() => handleStatusUpdate(req._id, "canceled")}
-              className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
-            >
-              Cancel
-            </button>
-          </>
-        )}
-    </div>
-  )}
-</td>
+                      {/* Admin + Donor + Volunteer → Done / Cancel */}
+                      {req.status === "inprogress" &&
+                        (role === "admin" ||
+                          role === "donor" ||
+                          role === "volunteer") && (
+                          <>
+                            <button
+                              onClick={() =>
+                                handleStatusUpdate(req._id, "done")
+                              }
+                              className="px-3 py-2 text-green-600 hover:bg-gray-100 text-left"
+                            >
+                              Done
+                            </button>
 
+                            <button
+                              onClick={() =>
+                                handleStatusUpdate(req._id, "canceled")
+                              }
+                              className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        )}
+                    </div>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
