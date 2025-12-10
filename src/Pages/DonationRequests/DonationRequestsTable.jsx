@@ -123,6 +123,7 @@ const DonationRequestsTable = ({
         showConfirmButton: false,
       });
     } catch (error) {
+      console.log(error)
       Swal.fire({
         icon: "error",
         title: "Oops!",
