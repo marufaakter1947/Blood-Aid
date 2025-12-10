@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { FiMoreVertical } from "react-icons/fi";
+import { getAuth } from "firebase/auth";
 
 
 
@@ -25,11 +26,16 @@ const DonationRequestsTable = ({
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [role, setRole] = useState(null);
 
-
+const getToken = async () => {
+  const auth = getAuth();
+  if (!auth.currentUser) return null;
+  return await auth.currentUser.getIdToken();
+};
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const token = await user.getIdToken();
+        // const token = await user.getIdToken();
+        const token = await getToken();
         const endpoint = fetchAll
           ? `${import.meta.env.VITE_API_URL}/donation-requests`
           : `${import.meta.env.VITE_API_URL}/donation-requests/my`;
@@ -59,6 +65,9 @@ const DonationRequestsTable = ({
 
   useEffect(() => {
   if (!user?.email) return;
+
+  
+
 
   const fetchRole = async () => {
     const res = await axios.get(
@@ -99,7 +108,8 @@ const DonationRequestsTable = ({
     if (!result.isConfirmed) return;
 
     try {
-      const token = await user.getIdToken();
+      // const token = await user.getIdToken();
+      const token = await getToken();
 
       await axios.delete(
         `${import.meta.env.VITE_API_URL}/donation-requests/${id}`,
@@ -129,7 +139,8 @@ const DonationRequestsTable = ({
   // Update Status
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      const token = await user.getIdToken();
+      // const token = await user.getIdToken();
+      const token = await getToken();
       const res = await axios.patch(
         `${import.meta.env.VITE_API_URL}/donation-requests/update-status/${id}`,
         { status: newStatus },

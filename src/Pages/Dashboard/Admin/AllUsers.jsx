@@ -100,7 +100,7 @@ const AllUsers = () => {
                 {/* User */}
                 <td className="px-4 py-3 flex items-center gap-3">
                   <img
-                    src={user.avatar || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                    src={user.photoURL || user.avatar || "https://i.ibb.co/4pDNDk1/avatar.png"}
                     onError={(e) =>
                       (e.target.src = "https://i.ibb.co/4pDNDk1/avatar.png")
                     }

@@ -96,7 +96,7 @@ const Registration = () => {
         name,
         email,
         role: "donor",
-        avatar: avatarUrl,
+        photoURL: avatarUrl,
         bloodGroup: selectedBlood,
         district: districts.find((d) => String(d.id) === String(selectedDistrict))?.name,
         upazila: selectedUpazila,
