@@ -22,7 +22,7 @@ const AdminDashboardHome = () => {
         setTotalRequests(requestsRes.data.count);
 
         // Funds
-        const fundsRes = await axiosSecure.get("/fundings/total");
+        const fundsRes = await axiosSecure.get("/api/funding/total");
         setTotalFunds(fundsRes.data.total);
       } catch (err) {
         console.error(err);
