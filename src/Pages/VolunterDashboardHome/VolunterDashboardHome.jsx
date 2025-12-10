@@ -21,22 +21,22 @@ const VolunterDashboardHome = () => {
           const usersRes = await axiosSecure.get("/admin/users");
           setTotalUsers(usersRes.data.length);
 
-          const requestsRes = await axiosSecure.get("/admin/donation-requests/count");
+          const requestsRes = await axiosSecure.get(
+            "/admin/donation-requests/count"
+          );
           setTotalRequests(requestsRes.data.count);
 
-          const fundsRes = await axiosSecure.get("/fundings/total");
+          const fundsRes = await axiosSecure.get("/funding/total");
           setTotalFunds(fundsRes.data.total);
         } else if (res.data.role === "volunteer") {
-          // For volunteers, fetch only relevant donation requests
           const requestsRes = await axiosSecure.get("/donation-requests");
           setTotalRequests(requestsRes.data.length);
 
-          // Optionally, show total users as active donors
           const usersRes = await axiosSecure.get("/donors");
           setTotalUsers(usersRes.data.length);
 
-          // Volunteers usually don't manage funds
-          setTotalFunds(0);
+          const fundsRes = await axiosSecure.get("/api/funding/total");
+          setTotalFunds(fundsRes.data.total);
         }
       } catch (err) {
         console.error(err);
