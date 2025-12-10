@@ -8,6 +8,8 @@ import DonationRequestForm from "../../DonationRequests/DonationRequestForm";
 const CreateDonationRequest = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [dbUser, setDbUser] = useState(null);
+
 
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
@@ -51,6 +53,31 @@ const CreateDonationRequest = () => {
     } else setFilteredUpazilas([]);
   }, [recipientDistrict, upazilas]);
 
+  useEffect(() => {
+  if (!user) return;
+
+  const loadUser = async () => {
+    const auth = getAuth();
+    const token = await auth.currentUser.getIdToken();
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+    setDbUser(data);
+  };
+
+  loadUser();
+}, [user]);
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -93,7 +120,7 @@ const CreateDonationRequest = () => {
     }
   };
 
-  if (user?.status === "blocked") {
+  if (dbUser?.status === "blocked") {
     return (
       <div className="p-6">
         <h2 className="text-xl font-bold text-red-600">
@@ -120,6 +147,7 @@ const CreateDonationRequest = () => {
         setRecipientUpazila={setRecipientUpazila}
         onSubmit={handleSubmit}
         submitText="Create Request"
+        disabled={dbUser?.status === "blocked"}
       />
     </div>
   );

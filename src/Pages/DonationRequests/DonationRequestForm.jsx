@@ -13,7 +13,6 @@ const DonationRequestForm = ({
   recipientUpazila,
   setRecipientUpazila,
   onSubmit,
-  submitText = "Submit",
   disabled = false,
 }) => {
   const handleChange = (e) => {
@@ -151,12 +150,16 @@ const DonationRequestForm = ({
       />
 
       <button
-        type="submit"
-        className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700"
-        disabled={disabled}
-      >
-        {submitText}
-      </button>
+  type="submit"
+  disabled={disabled}
+  className={`btn ${
+    disabled
+      ? "opacity-50 cursor-not-allowed"
+      : "bg-red-600 text-white"
+  }`}
+>
+  Create Request
+</button>
     </form>
   );
 };
