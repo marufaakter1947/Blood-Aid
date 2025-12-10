@@ -10,8 +10,9 @@ const SearchDonorPage = () => {
   const [bloodGroup, setBloodGroup] = useState("");
   const [district, setDistrict] = useState("");
   const [upazila, setUpazila] = useState("");
-//   const [donors, setDonors] = useState([]);
+  //   const [donors, setDonors] = useState([]);
   const [filteredDonors, setFilteredDonors] = useState([]);
+  const [searched, setSearched] = useState(false);
 
   // Load districts & upazilas
   useEffect(() => {
@@ -29,17 +30,8 @@ const SearchDonorPage = () => {
         setUpazilas(table.data);
       });
 
-    // Fetch donors from backend
-//    fetch(`${import.meta.env.VITE_API_URL}/donors`)
-//   .then((res) => res.json())
-//   .then((data) => setDonors(data))
-//   .catch((err) => console.error("Failed to fetch donors:", err));
   }, []);
-// Fetch donors from backend ✅
-
-
-
-  // Filter upazilas based on selected district
+ 
   useEffect(() => {
     if (district) {
       setFilteredUpazilas(
@@ -51,54 +43,41 @@ const SearchDonorPage = () => {
     setUpazila("");
   }, [district, upazilas]);
 
-//   const handleSearch = () => {
-//     const results = donors.filter(
-//       (donor) =>
-//         (bloodGroup ? donor.bloodGroup === bloodGroup : true) &&
-//         (district ? donor.district === districts.find((d) => String(d.id) === district)?.name : true) &&
-//         (upazila ? donor.upazila === filteredUpazilas.find((u) => String(u.id) === upazila)?.name : true)
-//     );
-//     setFilteredDonors(results);
-//   };
-// const handleSearch = async () => {
-//   try {
-//     const districtName =
-//       districts.find((d) => String(d.id) === district)?.name || "";
+  
+  const handleSearch = async () => {
+    if (!bloodGroup && !district && !upazila) {
+      setFilteredDonors([]);
+      setSearched(false);
+      return;
+    }
 
-//     const upazilaName =
-//       filteredUpazilas.find((u) => String(u.id) === upazila)?.name || "";
+    try {
+      setSearched(true);
 
-//     const res = await fetch(
-//       `${import.meta.env.VITE_API_URL}/donors/search?bloodGroup=${bloodGroup}&district=${districtName}&upazila=${upazilaName}`
-//     );
+      const districtName = districts.find(
+        (d) => String(d.id) === district
+      )?.name;
 
-//     const data = await res.json();
-//     setFilteredDonors(data);
-//   } catch (error) {
-//     console.error("Failed to fetch donors:", error);
-//   }
-// };
-const handleSearch = async () => {
-  try {
-    const districtName =
-      districts.find((d) => String(d.id) === district)?.name || "";
+      const upazilaName = filteredUpazilas.find(
+        (u) => String(u.id) === upazila
+      )?.name;
 
-    const upazilaName =
-      filteredUpazilas.find((u) => String(u.id) === upazila)?.name || "";
+      const params = new URLSearchParams();
+      if (bloodGroup) params.append("bloodGroup", bloodGroup);
+      if (districtName) params.append("district", districtName);
+      if (upazilaName) params.append("upazila", upazilaName);
 
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/donors/search?bloodGroup=${bloodGroup}&district=${districtName}&upazila=${upazilaName}`
-    );
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/donors/search?${params.toString()}`
+      );
 
-
-    const data = await res.json();
-    console.log(data)
-    setFilteredDonors(data);
-  } catch (error) {
-    console.error("Failed to fetch donors:", error);
-  }
-};
-
+      const data = await res.json();
+      console.log("SEARCH RESULT 👉", data);
+      setFilteredDonors(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -116,7 +95,9 @@ const handleSearch = async () => {
             >
               <option value="">Select</option>
               {bloodGroups.map((bg) => (
-                <option key={bg} value={bg}>{bg}</option>
+                <option key={bg} value={bg}>
+                  {bg}
+                </option>
               ))}
             </select>
           </div>
@@ -130,7 +111,9 @@ const handleSearch = async () => {
             >
               <option value="">Select</option>
               {districts.map((d) => (
-                <option key={d.id} value={d.id}>{d.name}</option>
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
               ))}
             </select>
           </div>
@@ -145,7 +128,9 @@ const handleSearch = async () => {
             >
               <option value="">Select</option>
               {filteredUpazilas.map((u) => (
-                <option key={u.id} value={u.id}>{u.name}</option>
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                </option>
               ))}
             </select>
           </div>
@@ -166,16 +151,35 @@ const handleSearch = async () => {
         {filteredDonors.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredDonors.map((donor) => (
-              <div key={donor._id} className="border rounded p-4 shadow">
-                <h2 className="font-bold text-lg">{donor.name}</h2>
-                <p>Blood Group: <span className="font-semibold">{donor.bloodGroup}</span></p>
-                <p>Location: {donor.upazila}, {donor.district}</p>
-                <p>Phone: {donor.phone}</p>
+              <div
+                key={donor._id}
+                className="border rounded-lg p-4 shadow flex items-center gap-4"
+              >
+                <img
+                  src={donor.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                  alt={donor.name}
+                  className="w-16 h-16 rounded-full object-cover border"
+                />
+
+                <div>
+                  <h2 className="font-bold text-lg">{donor.name}</h2>
+                  <p>
+                    Blood Group:{" "}
+                    <span className="font-semibold text-red-600">
+                      {donor.bloodGroup}
+                    </span>
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {donor.upazila}, {donor.district}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">No donors found. Please use the search form above.</p>
+          <p className="text-gray-500">
+            No donors found. Please use the search form above.
+          </p>
         )}
       </div>
     </div>
