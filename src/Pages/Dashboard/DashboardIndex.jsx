@@ -6,6 +6,7 @@ import AdminDashboardHome from "./Admin/AdminDashboardHome";
 import DashboardHome from "./Donor/DashboardHome";
 import { Navigate } from "react-router"; 
 import VolunterDashboardHome from "../VolunterDashboardHome/VolunterDashboardHome";
+import LoadingSpinner from "../../Component/Shared/LoadingSpinner";
 
 const DashboardIndex = () => {
   const axiosSecure = useAxiosSecure();
@@ -29,9 +30,9 @@ const DashboardIndex = () => {
     fetchRole();
   }, [axiosSecure, user, loading]);
 
-  if (loading) return <div className="p-6">Loading...</div>;
+  if (loading) return <div className="p-6"><LoadingSpinner></LoadingSpinner></div>;
   if (!user) return <Navigate to="/login" replace />; 
-  if (!role) return <div className="p-6">Loading role...</div>;
+  if (!role) return <div className="p-6"><LoadingSpinner></LoadingSpinner></div>;
 
   
   switch (role) {

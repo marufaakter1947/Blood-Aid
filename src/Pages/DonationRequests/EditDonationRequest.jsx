@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import DonationRequestForm from "./DonationRequestForm";
+import LoadingSpinner from "../../Component/Shared/LoadingSpinner";
 // import DonationRequestForm from "./DonationRequestForm";
 
 const EditDonationRequest = () => {
@@ -141,7 +142,7 @@ const handleUpdate = async (e) => {
 };
 
 
-  if (loading) return <div className="p-6">Loading...</div>;
+  if (loading) return <div className="p-6"><LoadingSpinner></LoadingSpinner></div>;
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow rounded">

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import useAuth from "../../../hooks/useAuth";
+import LoadingSpinner from "../../../Component/Shared/LoadingSpinner";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -121,7 +122,7 @@ const Profile = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (loading) return <div className="text-center py-10"><LoadingSpinner></LoadingSpinner></div>;
 
   return (
     <div className="max-w-3xl mx-auto p-6">

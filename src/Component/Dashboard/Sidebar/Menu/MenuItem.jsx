@@ -5,8 +5,8 @@ const MenuItem = ({ icon: Icon, label, address }) => {
     <NavLink
       to={address}
       className={({ isActive }) =>
-        `flex items-center px-4 py-2 my-2 text-gray-700 rounded-lg hover:bg-lime-100 hover:text-lime-800 transition-colors ${
-          isActive ? 'bg-lime-200 text-lime-900 font-semibold' : ''
+        `flex items-center px-4 py-2 my-2 text-gray-700 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors ${
+          isActive ? 'bg-red-200 text-red-900 font-semibold' : ''
         }`
       }
     >

@@ -7,13 +7,14 @@ import logo from '../../../assets/images/Blood_aid-removebg.png';
 import { GrLogout } from 'react-icons/gr';
 import { FcSettings } from 'react-icons/fc';
 import { AiOutlineBars } from 'react-icons/ai';
-import { MdDashboard } from 'react-icons/md';
+import { MdDashboard} from 'react-icons/md';
 
 // Role Menus
 import DonorMenu from './Menu/DonorMenu';
 import VolunteerMenu from './Menu/VolunteerMenu';
 import AdminMenu from './Menu/AdminMenu';
 import MenuItem from './Menu/MenuItem';
+import { FaHandHoldingWater, FaPlusCircle } from 'react-icons/fa';
 
 const Sidebar = () => {
   const { user, logOut, loading } = useAuth();
@@ -65,12 +66,12 @@ const Sidebar = () => {
             {['admin', 'volunteer'].includes(role) && (
               <>
                 <MenuItem
-                  icon={MdDashboard} // Replace icon if desired
+                  icon={FaPlusCircle} 
                   label="Create Donation Request"
                   address="/dashboard/create-donation-request"
                 />
                 <MenuItem
-                  icon={MdDashboard} // Replace icon if desired
+                  icon={FaHandHoldingWater}
                   label="My Donation Requests"
                   address="/dashboard/my-donation-requests"
                 />

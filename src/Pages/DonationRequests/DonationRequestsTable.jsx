@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { FiMoreVertical } from "react-icons/fi";
 import { getAuth } from "firebase/auth";
+import LoadingSpinner from "../../Component/Shared/LoadingSpinner";
 
 const statusOptions = ["all", "pending", "inprogress", "done", "canceled"];
 
@@ -155,8 +156,8 @@ const DonationRequestsTable = ({
     }
   };
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (!requests.length) return null; // hide if no requests
+  if (loading) return <div className="p-6"><LoadingSpinner></LoadingSpinner></div>;
+  if (!requests.length) return null;
 
   return (
     <div className="p-6">
