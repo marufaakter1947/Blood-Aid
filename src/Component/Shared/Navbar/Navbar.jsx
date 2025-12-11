@@ -24,7 +24,7 @@ const Navbar = () => {
     <div className="bg-red-50 fixed inset-x-0 top-0 z-50">
       <div className="mx-4 bg-white shadow rounded">
         <Container>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center py-2">
             <Link to="/" className="flex items-center gap-1">
               <img src={logo} alt="logo" width="30" />
               <span className="hidden text-2xl md:block font-bold text-red-600">

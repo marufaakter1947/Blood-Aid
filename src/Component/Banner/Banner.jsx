@@ -10,7 +10,7 @@ const Banner = () => {
   };
   return (
     <section
-      className="relative h-[70vh] flex items-center bg-cover bg-center bg-no-repeat mx-4 rounded-xl overflow-hidden"
+      className=" mt-10 relative h-[70vh] flex items-center bg-cover bg-center bg-no-repeat mx-4 rounded-xl overflow-hidden"
       style={{ backgroundImage: `url(${heroImage})` }}
     >
       {/* Dark Overlay */}
