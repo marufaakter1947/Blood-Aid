@@ -9,7 +9,7 @@ const Banner = () => {
    const handleClick = (e) => {
     e.preventDefault();
     if (user) {
-      navigate("/dashboard/donation-requests");
+      navigate("/donation-requests");
     } else {
       navigate("/registration");
     }

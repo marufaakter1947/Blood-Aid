@@ -125,22 +125,22 @@ const Profile = () => {
   if (loading) return <div className="text-center py-10"><LoadingSpinner></LoadingSpinner></div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 bg-red-100 rounded">
       <Toaster position="top-right" />
 
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Profile</h2>
+        <h2 className="text-2xl font-bold">My Profile</h2>
         {!isEditing ? (
           <button
             onClick={() => setIsEditing(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-600 transition"
           >
             Edit
           </button>
         ) : (
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+            className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-600 transition"
           >
             Save
           </button>

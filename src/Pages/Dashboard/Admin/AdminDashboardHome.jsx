@@ -37,7 +37,7 @@ const { user } = useAuth();
     <div className="p-6 space-y-6">
       <div className="bg-white shadow rounded p-6 text-center">
         <h2 className="text-2xl font-bold mb-6">
-        Welcome, <span className="text-red-600">{user.displayName}</span> 👋
+        Hi, <span className="text-red-600">{user.displayName}</span>
       </h2>
         <h2 className="text-2xl font-bold text-red-600">
           Welcome, Admin Dashboard!
@@ -50,7 +50,7 @@ const { user } = useAuth();
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Total Users */}
-        <div className="bg-white shadow p-6 rounded flex items-center gap-4">
+        <div className="bg-red-100 shadow p-6 rounded flex items-center gap-4">
           <FaUsers className="text-red-600 text-3xl" />
           <div>
             <p className="text-2xl font-bold">{totalUsers}</p>
@@ -59,7 +59,7 @@ const { user } = useAuth();
         </div>
 
         {/* Total Donation Requests */}
-        <div className="bg-white shadow p-6 rounded flex items-center gap-4">
+        <div className="bg-red-100 shadow p-6 rounded flex items-center gap-4">
           <FaHandHoldingMedical className="text-red-600 text-3xl" />
           <div>
             <p className="text-2xl font-bold">{totalRequests}</p>
@@ -68,7 +68,7 @@ const { user } = useAuth();
         </div>
 
         {/* Total Funds */}
-        <div className="bg-white shadow p-6 rounded flex items-center gap-4">
+        <div className="bg-red-100 shadow p-6 rounded flex items-center gap-4">
           <FaDonate className="text-red-600 text-3xl" />
           <div>
             <p className="text-2xl font-bold">৳ {totalFunds}</p>
