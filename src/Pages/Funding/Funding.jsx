@@ -129,7 +129,7 @@ const Funding = () => {
 
       <div className="bg-red-50 border border-red-200 rounded p-4 mb-6">
         <h3 className="text-lg font-semibold text-gray-700">Total Funds</h3>
-        <p className="text-3xl font-bold text-red-600">TK. {totalFund}</p>
+        <p className="text-3xl font-bold text-red-600">Tk. {totalFund}</p>
       </div>
 
       <div className="overflow-x-auto bg-white shadow rounded">
@@ -137,7 +137,7 @@ const Funding = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="text-left px-4 py-3">Donor Name</th>
-              <th className="text-left px-4 py-3">Amount (TK.)</th>
+              <th className="text-left px-4 py-3">Amount (Tk.)</th>
               <th className="text-left px-4 py-3">Funding Date</th>
             </tr>
           </thead>
@@ -152,7 +152,7 @@ const Funding = () => {
               funds.map((fund, idx) => (
                 <tr key={idx} className="border-b hover:bg-gray-50 transition">
                   <td className="px-4 py-3">{fund.name}</td>
-                  <td className="px-4 py-3 font-semibold">TK. {fund.amount}</td>
+                  <td className="px-4 py-3 font-semibold">Tk. {fund.amount}</td>
                   <td className="px-4 py-3">{fund.date}</td>
                 </tr>
               ))

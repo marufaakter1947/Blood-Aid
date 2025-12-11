@@ -65,7 +65,7 @@ const AllUsers = () => {
 
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto">
-      {/* Header */}
+    
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold text-red-600">All Users</h2>
 
@@ -97,7 +97,7 @@ const AllUsers = () => {
           <tbody>
             {paginatedUsers.map((user) => (
               <tr key={user._id} className="border-b hover:bg-gray-50">
-                {/* User */}
+              
                 <td className="px-4 py-3 flex items-center gap-3">
                   <img
                     src={user.photoURL || user.avatar || "https://i.ibb.co/4pDNDk1/avatar.png"}
@@ -140,7 +140,7 @@ const AllUsers = () => {
                   </button>
 
                   {openMenu === user._id && (
-                    <div className="absolute right-3 mt-2 w-48 bg-white border rounded shadow z-50">
+                    <div className="absolute right-3 mt-2 w-48 bg-white border rounded shadow z-50 flex flex-col">
                       {user.status === "active" ? (
                         <button
                           onClick={() =>

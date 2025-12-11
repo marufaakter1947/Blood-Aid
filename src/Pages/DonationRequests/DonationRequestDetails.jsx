@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import LoadingSpinner from "../../Component/Shared/LoadingSpinner";
 
 const DonationRequestDetails = () => {
   const { id } = useParams();
@@ -84,12 +85,14 @@ useEffect(() => {
 };
 
 
-  if (loading) return <div className="p-6">Loading...</div>;
+  if (loading) return <div className="p-6">
+    <LoadingSpinner></LoadingSpinner>
+  </div>;
   if (!request) return null;
   
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-white rounded shadow mt-20">
+    <div className="p-6 max-w-3xl mx-auto rounded shadow mt-20">
       <h2 className="text-2xl font-bold text-red-600 mb-4">
         Donation Request Details
       </h2>
@@ -128,7 +131,7 @@ useEffect(() => {
       {request.status === "pending" && role !== "volunteer" && (
         <button
           onClick={() => setOpenModal(true)}
-          className="mt-4 bg-red-600 text-white px-6 py-2 rounded"
+          className="mt-4 bg-linear-to-r from-[#BC1823] to-[#3f060a] text-white px-6 py-2 rounded"
         >
           Donate
         </button>

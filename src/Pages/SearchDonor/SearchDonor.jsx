@@ -177,7 +177,7 @@ const SearchDonorPage = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">
+          <p className="text-gray-500 text-center">
             No donors found. Please use the search form above.
           </p>
         )}
