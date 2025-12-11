@@ -160,183 +160,246 @@ const DonationRequestsTable = ({
   if (!requests.length) return null;
 
   return (
-    <div className="p-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-        <h2 className="text-xl font-bold text-red-600">{title}</h2>
+    <div>
+      {/* Desktop Table */}
+<div className="hidden md:block overflow-x-auto">
+  <table className="min-w-full border text-center text-sm">
+    <thead className="bg-gray-100">
+      <tr>
+        {fetchAll && <th className="border px-3 py-2">Requester</th>}
+        <th className="border px-3 py-2">Recipient</th>
+        <th className="border px-3 py-2">Location</th>
+        <th className="border px-3 py-2">Date</th>
+        <th className="border px-3 py-2">Time</th>
+        <th className="border px-3 py-2">Blood</th>
+        <th className="border px-3 py-2">Status</th>
+        <th className="border px-3 py-2">Donor Info</th>
+        <th className="border px-3 py-2">Actions</th>
+      </tr>
+    </thead>
 
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          className="mt-2 md:mt-0 border rounded px-3 py-1"
-        >
-          {statusOptions.map((status) => (
-            <option key={status} value={status}>
-              {status.toUpperCase()}
-            </option>
-          ))}
-        </select>
-      </div>
+    <tbody>
+      {currentItems.map((req) => (
+        <tr key={req._id} className="text-sm">
+          {fetchAll && (
+            <td className="border px-3 py-2">{req.requesterName}</td>
+          )}
+          <td className="border px-3 py-2">{req.recipientName}</td>
+          <td className="border px-3 py-2">
+            {req.recipientDistrict}, {req.recipientUpazila}
+          </td>
+          <td className="border px-3 py-2">{req.donationDate}</td>
+          <td className="border px-3 py-2">{req.donationTime}</td>
+          <td className="border px-3 py-2 font-semibold">{req.bloodGroup}</td>
+          <td className="border px-3 py-2 capitalize">{req.status}</td>
+          <td className="border px-3 py-2">
+            {req.status === "inprogress" && req.donorInfo ? (
+              <>
+                <p>{req.donorInfo.name}</p>
+                <p className="text-xs text-gray-500">
+                  {req.donorInfo.email}
+                </p>
+              </>
+            ) : (
+              "-"
+            )}
+          </td>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border text-center text-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              {fetchAll && <th className="border px-3 py-2">Requester</th>}
-              <th className="border px-3 py-2">Recipient</th>
-              <th className="border px-3 py-2">Location</th>
-              <th className="border px-3 py-2">Date</th>
-              <th className="border px-3 py-2">Time</th>
-              <th className="border px-3 py-2">Blood</th>
-              <th className="border px-3 py-2">Status</th>
-              <th className="border px-3 py-2">Donor Info</th>
-              <th className="border px-3 py-2">Actions</th>
-            </tr>
-          </thead>
+          {/* ACTION BUTTONS */}
+          <td className="border px-3 py-2 relative">
+            <button
+              onClick={() =>
+                setDropdownOpen(dropdownOpen === req._id ? null : req._id)
+              }
+              className="p-1 hover:bg-gray-100 rounded"
+            >
+              <FiMoreVertical />
+            </button>
 
-          <tbody>
-            {currentItems.map((req) => (
-              <tr key={req._id} className="text-sm">
-                {fetchAll && (
-                  <td className="border px-3 py-2">{req.requesterName}</td>
+            {/* Dropdown */}
+            {dropdownOpen === req._id && (
+              <div className="absolute right-0 mt-1 w-36 bg-white border shadow rounded z-10 flex flex-col text-left">
+                <Link
+                  to={`/donation-requests/${req._id}`}
+                  className="px-3 py-2 hover:bg-gray-100"
+                >
+                  View
+                </Link>
+
+                {(role === "admin" || role === "donor") && (
+                  <>
+                    <Link
+                      to={`/dashboard/edit-request/${req._id}`}
+                      className="px-3 py-2 hover:bg-gray-100"
+                    >
+                      Edit
+                    </Link>
+
+                    <button
+                      onClick={() => handleDelete(req._id)}
+                      className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
-                <td className="border px-3 py-2">{req.recipientName}</td>
-                <td className="border px-3 py-2">
-                  {req.recipientDistrict}, {req.recipientUpazila}
-                </td>
-                <td className="border px-3 py-2">{req.donationDate}</td>
-                <td className="border px-3 py-2">{req.donationTime}</td>
-                <td className="border px-3 py-2 font-semibold">
-                  {req.bloodGroup}
-                </td>
-                <td className="border px-3 py-2 capitalize">{req.status}</td>
-                <td className="border px-3 py-2">
-                  {req.status === "inprogress" && req.donorInfo ? (
+
+                {req.status === "inprogress" &&
+                  (role === "admin" ||
+                    role === "donor" ||
+                    role === "volunteer") && (
                     <>
-                      <p>{req.donorInfo.name}</p>
-                      <p className="text-xs text-gray-500">
-                        {req.donorInfo.email}
-                      </p>
+                      <button
+                        onClick={() =>
+                          handleStatusUpdate(req._id, "done")
+                        }
+                        className="px-3 py-2 text-green-600 hover:bg-gray-100 text-left"
+                      >
+                        Done
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          handleStatusUpdate(req._id, "canceled")
+                        }
+                        className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                      >
+                        Cancel
+                      </button>
                     </>
-                  ) : (
-                    "-"
                   )}
-                </td>
-                <td className="border px-3 py-2 relative">
+              </div>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+{/* MOBILE CARD VIEW */}
+<div className="md:hidden space-y-4">
+  {currentItems.map((req) => (
+    <div
+      key={req._id}
+      className="border rounded-lg p-4 shadow-sm bg-white"
+    >
+      {fetchAll && (
+        <p className="text-sm">
+          <span className="font-semibold">Requester:</span>{" "}
+          {req.requesterName}
+        </p>
+      )}
+
+      <p className="text-sm">
+        <span className="font-semibold">Recipient:</span>{" "}
+        {req.recipientName}
+      </p>
+
+      <p className="text-sm">
+        <span className="font-semibold">Location:</span>{" "}
+        {req.recipientDistrict}, {req.recipientUpazila}
+      </p>
+
+      <p className="text-sm">
+        <span className="font-semibold">Date:</span> {req.donationDate}
+      </p>
+
+      <p className="text-sm">
+        <span className="font-semibold">Time:</span> {req.donationTime}
+      </p>
+
+      <p className="text-sm">
+        <span className="font-semibold">Blood:</span>{" "}
+        {req.bloodGroup}
+      </p>
+
+      <p className="text-sm capitalize">
+        <span className="font-semibold">Status:</span> {req.status}
+      </p>
+
+      <p className="text-sm">
+        <span className="font-semibold">Donor Info:</span>{" "}
+        {req.status === "inprogress" && req.donorInfo ? (
+          <>
+            {req.donorInfo.name} ({req.donorInfo.email})
+          </>
+        ) : (
+          "-"
+        )}
+      </p>
+
+      {/* ACTIONS BUTTONS */}
+      <div className="mt-3">
+        <button
+          onClick={() =>
+            setDropdownOpen(dropdownOpen === req._id ? null : req._id)
+          }
+          className="p-2 border rounded w-full flex justify-center"
+        >
+          <FiMoreVertical />
+        </button>
+
+        {dropdownOpen === req._id && (
+          <div className="mt-2 w-full bg-white border shadow rounded flex flex-col text-left">
+            <Link
+              to={`/donation-requests/${req._id}`}
+              className="px-3 py-2 hover:bg-gray-100"
+            >
+              View
+            </Link>
+
+            {(role === "admin" || role === "donor") && (
+              <>
+                <Link
+                  to={`/dashboard/edit-request/${req._id}`}
+                  className="px-3 py-2 hover:bg-gray-100"
+                >
+                  Edit
+                </Link>
+
+                <button
+                  onClick={() => handleDelete(req._id)}
+                  className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                >
+                  Delete
+                </button>
+              </>
+            )}
+
+            {req.status === "inprogress" &&
+              (role === "admin" ||
+                role === "donor" ||
+                role === "volunteer") && (
+                <>
                   <button
                     onClick={() =>
-                      setDropdownOpen(dropdownOpen === req._id ? null : req._id)
+                      handleStatusUpdate(req._id, "done")
                     }
-                    className="p-1 hover:bg-gray-100 rounded"
+                    className="px-3 py-2 text-green-600 hover:bg-gray-100 text-left"
                   >
-                    <FiMoreVertical />
+                    Done
                   </button>
 
-                  {dropdownOpen === req._id && (
-                    <div className="absolute right-0 mt-1 w-36 bg-white border shadow rounded z-10 flex flex-col text-left">
-                      {/* View → Everyone */}
-                      <Link
-                        to={`/donation-requests/${req._id}`}
-                        className="px-3 py-2 hover:bg-gray-100"
-                      >
-                        View
-                      </Link>
-
-                      {/* Admin + Donor → Edit & Delete */}
-                      {(role === "admin" || role === "donor") && (
-                        <>
-                          <Link
-                            to={`/dashboard/edit-request/${req._id}`}
-                            className="px-3 py-2 hover:bg-gray-100"
-                          >
-                            Edit
-                          </Link>
-
-                          <button
-                            onClick={() => handleDelete(req._id)}
-                            className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
-
-                      {/* Admin + Donor + Volunteer → Done / Cancel */}
-                      {req.status === "inprogress" &&
-                        (role === "admin" ||
-                          role === "donor" ||
-                          role === "volunteer") && (
-                          <>
-                            <button
-                              onClick={() =>
-                                handleStatusUpdate(req._id, "done")
-                              }
-                              className="px-3 py-2 text-green-600 hover:bg-gray-100 text-left"
-                            >
-                              Done
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                handleStatusUpdate(req._id, "canceled")
-                              }
-                              className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        )}
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* Pagination */}
-        {!maxItems && totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-6">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => p - 1)}
-              className={`px-3 py-1 rounded border ${
-                currentPage === 1 ? "opacity-40 cursor-not-allowed" : ""
-              }`}
-            >
-              Prev
-            </button>
-
-            {[...Array(totalPages).keys()].map((num) => {
-              const page = num + 1;
-              return (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`px-3 py-1 rounded border ${
-                    currentPage === page
-                      ? "bg-red-600 text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  {page}
-                </button>
-              );
-            })}
-
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((p) => p + 1)}
-              className={`px-3 py-1 rounded border ${
-                currentPage === totalPages
-                  ? "opacity-40 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              Next
-            </button>
+                  <button
+                    onClick={() =>
+                      handleStatusUpdate(req._id, "canceled")
+                    }
+                    className="px-3 py-2 text-red-600 hover:bg-gray-100 text-left"
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
           </div>
         )}
       </div>
     </div>
+  ))}
+</div>
+
+    </div>
+    
   );
 };
 
