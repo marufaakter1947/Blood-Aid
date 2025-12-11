@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaDonate } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import LoadingSpinner from "../../Component/Shared/LoadingSpinner";
 
 // import { useRef } from "react";
 
@@ -47,7 +48,7 @@ const Funding = () => {
         );
         const data = await res.json();
 
-        // Clear session_id from URL **before** calling fetchFunds
+        // Clear session_id from URL before calling fetchFunds
         window.history.replaceState({}, document.title, window.location.pathname);
 
         if (data.success) {
@@ -112,7 +113,7 @@ const Funding = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto pt-15">
+    <div className="p-6 max-w-6xl mx-auto pt-20">
       <Toaster position="top-right" reverseOrder={false} toastOptions={{ duration: 1500 }} />
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -128,7 +129,7 @@ const Funding = () => {
 
       <div className="bg-red-50 border border-red-200 rounded p-4 mb-6">
         <h3 className="text-lg font-semibold text-gray-700">Total Funds</h3>
-        <p className="text-3xl font-bold text-red-600">৳ {totalFund}</p>
+        <p className="text-3xl font-bold text-red-600">TK. {totalFund}</p>
       </div>
 
       <div className="overflow-x-auto bg-white shadow rounded">
@@ -136,7 +137,7 @@ const Funding = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="text-left px-4 py-3">Donor Name</th>
-              <th className="text-left px-4 py-3">Amount (৳)</th>
+              <th className="text-left px-4 py-3">Amount (TK.)</th>
               <th className="text-left px-4 py-3">Funding Date</th>
             </tr>
           </thead>
@@ -144,14 +145,14 @@ const Funding = () => {
             {loading ? (
               <tr>
                 <td colSpan="3" className="text-center py-6">
-                  Loading...
+                  <LoadingSpinner></LoadingSpinner>
                 </td>
               </tr>
             ) : funds.length > 0 ? (
               funds.map((fund, idx) => (
                 <tr key={idx} className="border-b hover:bg-gray-50 transition">
                   <td className="px-4 py-3">{fund.name}</td>
-                  <td className="px-4 py-3 font-semibold">৳ {fund.amount}</td>
+                  <td className="px-4 py-3 font-semibold">TK. {fund.amount}</td>
                   <td className="px-4 py-3">{fund.date}</td>
                 </tr>
               ))
