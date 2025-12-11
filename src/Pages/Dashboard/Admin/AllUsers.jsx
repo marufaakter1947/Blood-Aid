@@ -27,7 +27,7 @@ const AllUsers = () => {
       toast.error("Failed to load users");
     }
   };
-// actions
+  // actions
   const updateRole = async (email, role) => {
     try {
       await axiosSecure.patch("/admin/role", { email, role });
@@ -55,7 +55,7 @@ const AllUsers = () => {
       ? users
       : users.filter((u) => u.status === statusFilter);
 
-    //   pagination
+  //   pagination
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
 
   const paginatedUsers = filteredUsers.slice(
@@ -65,7 +65,6 @@ const AllUsers = () => {
 
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto">
-    
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <h2 className="text-2xl font-bold text-red-600">All Users</h2>
 
@@ -83,7 +82,8 @@ const AllUsers = () => {
         </select>
       </div>
 
-      <div className="overflow-x-auto bg-white rounded shadow">
+      {/* Desktop Table (hidden on mobile) */}
+      <div className="hidden md:block overflow-x-auto bg-white rounded shadow">
         <table className="min-w-full text-sm">
           <thead className="bg-gray-100">
             <tr>
@@ -97,10 +97,13 @@ const AllUsers = () => {
           <tbody>
             {paginatedUsers.map((user) => (
               <tr key={user._id} className="border-b hover:bg-gray-50">
-              
                 <td className="px-4 py-3 flex items-center gap-3">
                   <img
-                    src={user.photoURL || user.avatar || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                    src={
+                      user.photoURL ||
+                      user.avatar ||
+                      "https://i.ibb.co/4pDNDk1/avatar.png"
+                    }
                     onError={(e) =>
                       (e.target.src = "https://i.ibb.co/4pDNDk1/avatar.png")
                     }
@@ -143,18 +146,14 @@ const AllUsers = () => {
                     <div className="absolute right-3 mt-2 w-48 bg-white border rounded shadow z-50 flex flex-col">
                       {user.status === "active" ? (
                         <button
-                          onClick={() =>
-                            updateStatus(user.email, "blocked")
-                          }
+                          onClick={() => updateStatus(user.email, "blocked")}
                           className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Block User
                         </button>
                       ) : (
                         <button
-                          onClick={() =>
-                            updateStatus(user.email, "active")
-                          }
+                          onClick={() => updateStatus(user.email, "active")}
                           className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Unblock User
@@ -163,9 +162,7 @@ const AllUsers = () => {
 
                       {user.role === "donor" && (
                         <button
-                          onClick={() =>
-                            updateRole(user.email, "volunteer")
-                          }
+                          onClick={() => updateRole(user.email, "volunteer")}
                           className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Make Volunteer
@@ -197,6 +194,106 @@ const AllUsers = () => {
         </table>
       </div>
 
+      {/* MOBILE CARD VIEW (shows only on small screens) */}
+      <div className="md:hidden space-y-4">
+        {paginatedUsers.map((user) => (
+          <div
+            key={user._id}
+            className="bg-white border rounded-lg p-4 shadow-sm"
+          >
+            <div className="flex items-center gap-3">
+              <img
+                src={
+                  user.photoURL ||
+                  user.avatar ||
+                  "https://i.ibb.co/4pDNDk1/avatar.png"
+                }
+                onError={(e) =>
+                  (e.target.src = "https://i.ibb.co/4pDNDk1/avatar.png")
+                }
+                className="w-12 h-12 rounded-full object-cover border"
+              />
+
+              <div>
+                <p className="font-medium text-base">
+                  {user.name || "Unnamed User"}
+                </p>
+                <p className="text-xs text-gray-500">{user.email}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mt-3">
+              <p className="text-sm">
+                <span className="font-semibold">Role:</span> {user.role}
+              </p>
+
+              <p className="text-sm">
+                <span className="font-semibold">Status:</span>{" "}
+                <span
+                  className={`px-2 py-1 rounded text-xs font-semibold ${
+                    user.status === "active"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {user.status}
+                </span>
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-3">
+              <button
+                onClick={() =>
+                  setOpenMenu(openMenu === user._id ? null : user._id)
+                }
+                className="w-full p-2 border rounded flex justify-center"
+              >
+                <FiMoreVertical />
+              </button>
+
+              {openMenu === user._id && (
+                <div className="mt-2 w-full bg-white border rounded shadow flex flex-col text-left">
+                  {user.status === "active" ? (
+                    <button
+                      onClick={() => updateStatus(user.email, "blocked")}
+                      className="dropdown-btn text-left hover:bg-red-50"
+                    >
+                      Block User
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => updateStatus(user.email, "active")}
+                      className="dropdown-btn text-left hover:bg-red-50"
+                    >
+                      Unblock User
+                    </button>
+                  )}
+
+                  {user.role === "donor" && (
+                    <button
+                      onClick={() => updateRole(user.email, "volunteer")}
+                      className="dropdown-btn text-left hover:bg-red-50"
+                    >
+                      Make Volunteer
+                    </button>
+                  )}
+
+                  {user.role !== "admin" && (
+                    <button
+                      onClick={() => updateRole(user.email, "admin")}
+                      className="dropdown-btn text-left hover:bg-red-50"
+                    >
+                      Make Admin
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
       {totalPages > 1 && (
         <div className="flex justify-center mt-6 gap-2">
           <button
@@ -212,9 +309,7 @@ const AllUsers = () => {
               key={n}
               onClick={() => setCurrentPage(n + 1)}
               className={`px-3 py-1 border rounded ${
-                currentPage === n + 1
-                  ? "bg-red-500 text-white"
-                  : ""
+                currentPage === n + 1 ? "bg-red-500 text-white" : ""
               }`}
             >
               {n + 1}
