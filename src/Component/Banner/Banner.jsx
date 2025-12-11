@@ -1,9 +1,19 @@
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router";
 import heroImage from "../../assets/images/Blood-Hero.jpg";
+import useAuth from "../../hooks/useAuth";
 
 const Banner = () => {
    const navigate = useNavigate();
+   const { user } = useAuth();
+   const handleClick = (e) => {
+    e.preventDefault();
+    if (user) {
+      navigate("/dashboard/donation-requests");
+    } else {
+      navigate("/registration");
+    }
+  };
 
   const handleFindDonorClick = () => {
     navigate("/search-donor");
@@ -33,23 +43,23 @@ const Banner = () => {
             Blood Aid connects donors with people in need. Your one donation can save a life.
           </p>
 
-          <div className="mt-6 flex flex-col  md:flex-row gap-10 md:gap-4 justify-center md:justify-start">
+          <div className="mt-6 flex flex-col  md:flex-row gap-10 md:gap-4 justify-center items-center md:justify-start">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                onClick={handleFindDonorClick}
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition cursor-pointer"
               >
                 Find Donors
               </Link>
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/registration"
-                className="border border-white text-white hover:bg-white hover:text-black px-6 py-3 rounded-lg font-semibold transition"
+              <button
+                onClick={handleClick}
+                className="border border-white text-white hover:bg-white hover:text-black px-6 py-3 rounded-lg font-semibold transition cursor-pointer"
               >
                 Become a Donor
-              </Link>
+              </button>
             </motion.div>
           </div>
         </motion.div>

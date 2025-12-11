@@ -121,7 +121,7 @@ const Registration = () => {
   );
 
   return (
-    <div className="flex justify-center items-center min-h-screen pb-10">
+    <div className="flex justify-center items-center min-h-screen pb-10 pt-15">
       <div className="w-full max-w-lg p-8 bg-white rounded shadow">
         <h2 className="text-2xl font-bold text-center text-red-600 mb-4">
           Register Now
@@ -238,7 +238,7 @@ const Registration = () => {
 
           <button
             disabled={loading || uploading}
-            className="w-full bg-red-600 text-white py-2 rounded cursor-pointer"
+            className="w-full bg-linear-to-r from-[#BC1823] to-[#3f060a] text-white py-2 rounded cursor-pointer"
           >
             {uploading ? "Creating Account..." : "Register"}
           </button>

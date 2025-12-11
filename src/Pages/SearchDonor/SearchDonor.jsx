@@ -72,7 +72,7 @@ const SearchDonorPage = () => {
       );
 
       const data = await res.json();
-      console.log("SEARCH RESULT 👉", data);
+      console.log("SEARCH RESULT", data);
       setFilteredDonors(data);
     } catch (err) {
       console.error(err);
@@ -80,8 +80,8 @@ const SearchDonorPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Search Blood Donors</h1>
+    <div className="max-w-4xl mx-auto p-4 mt-15">
+      <h1 className="text-2xl text-red-600 text-center font-bold mb-4">Search Blood Donors</h1>
 
       {/* Search Form */}
       <div className="bg-white shadow-md rounded p-6 mb-6">
@@ -138,7 +138,7 @@ const SearchDonorPage = () => {
           <div className="flex items-end">
             <button
               onClick={handleSearch}
-              className="w-full bg-red-600 text-white font-semibold py-2 rounded hover:bg-red-700"
+              className="w-full bg-linear-to-r from-[#BC1823] to-[#3f060a] text-white font-semibold py-2 rounded hover:bg-red-700 cursor-pointer"
             >
               Search
             </button>

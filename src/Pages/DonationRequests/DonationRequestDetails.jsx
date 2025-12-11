@@ -131,7 +131,7 @@ useEffect(() => {
       {request.status === "pending" && role !== "volunteer" && (
         <button
           onClick={() => setOpenModal(true)}
-          className="mt-4 bg-linear-to-r from-[#BC1823] to-[#3f060a] text-white px-6 py-2 rounded"
+          className="mt-4 bg-linear-to-r from-[#BC1823] to-[#3f060a] text-white px-6 py-2 rounded cursor-pointer"
         >
           Donate
         </button>
@@ -156,13 +156,13 @@ useEffect(() => {
             <div className="flex gap-3">
               <button
                 onClick={handleConfirmDonation}
-                className="bg-red-600 text-white px-4 py-2 rounded"
+                className="bg-red-600 text-white px-4 py-2 rounded pointer-cursor"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setOpenModal(false)}
-                className="border px-4 py-2 rounded"
+                className="border px-4 py-2 rounded pointer-cursor"
               >
                 Cancel
               </button>
