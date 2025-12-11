@@ -42,7 +42,7 @@ const [totalRequests, setTotalRequests] = useState(0);
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6">
-        Welcome, <span className="text-red-600">{user.displayName}</span> 👋
+        Welcome, <span className="text-red-600">{user.displayName}</span>
       </h2>
 
       {recentRequests.length > 0 && (

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FaUsers, FaDonate, FaHandHoldingMedical } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const VolunterDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
-
+ const { user } = useAuth();
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalRequests, setTotalRequests] = useState(0);
   const [totalFunds, setTotalFunds] = useState(0);
@@ -50,7 +51,7 @@ const VolunterDashboardHome = () => {
     <div className="p-6 space-y-6">
       <div className="bg-white shadow rounded p-6">
         <h2 className="text-2xl font-bold text-red-600">
-          Welcome, {role === "admin" ? "Admin" : "Volunteer"}!
+          Welcome, <span className="text-red-600">{user.displayName}</span>
         </h2>
         <p className="mt-2 text-gray-600">
           Here’s a quick overview of your Blood Aid platform.
