@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { FaChevronDown } from "react-icons/fa";
@@ -21,6 +21,7 @@ const Registration = () => {
   const [uploading, setUploading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const { user } = useAuth();
 
   // Load districts & upazilas
   useEffect(() => {
@@ -60,6 +61,7 @@ const Registration = () => {
     const password = form.password.value;
     const confirmPassword = form.confirm_password.value;
     const avatarFile = form.avatar.files[0];
+
 
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match");
@@ -119,6 +121,8 @@ const Registration = () => {
       <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
     </div>
   );
+  if (user) return <Navigate to="/dashboard" replace />;
+ 
 
   return (
     <div className="flex justify-center items-center min-h-screen pb-10 pt-15">

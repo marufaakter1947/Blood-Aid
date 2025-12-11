@@ -1,5 +1,7 @@
 import Button from '../Component/Shared/Button/Button'
 import { useNavigate } from 'react-router'
+import errorImage from "../assets/images/error.jpeg";
+
 
 const ErrorPage = () => {
   const navigate = useNavigate()
@@ -7,8 +9,9 @@ const ErrorPage = () => {
   return (
     <section className='bg-white '>
       <div className='container flex items-center min-h-screen px-6 py-12 mx-auto'>
+        <img className="w-[400px] h-[345px] mt-5" src={errorImage} alt="" />
         <div className='flex flex-col items-center max-w-sm mx-auto text-center'>
-          <p className='p-3 text-sm font-medium text-lime-500 rounded-full bg-blue-50 '>
+          <p className='p-3 text-sm font-medium text-red-500 rounded-full bg-blue-50 '>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -32,27 +35,15 @@ const ErrorPage = () => {
           <div className='flex items-center w-full mt-6 gap-x-3 shrink-0 sm:w-auto'>
             <button
               onClick={() => navigate(-1)}
-              className='flex items-center justify-center w-1/2 px-5 py-1 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto   hover:bg-gray-100 '
+              className='flex items-center justify-center w-1/2 px-5 py-2 text-white font-bold transition-colors duration-200 bg-linear-to-r from-[#BC1823] to-[#3f060a] border rounded-lg gap-x-2 sm:w-auto   hover:bg-red-400 cursor-pointer '
             >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='w-5 h-5 rtl:rotate-180 text-lime-500'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18'
-                />
-              </svg>
-
-              <span>Go back</span>
+              Go back
+            </button>
+            <button onClick={() => navigate('/')} className='px-5 py-2 bg-linear-to-r from-[#BC1823] to-[#3f060a] font-bold text-white rounded-lg hover:bg-red-400 cursor-pointer'>
+              Take Me Home
             </button>
 
-            <Button label={'Take Me Home'} onClick={() => navigate('/')} />
+            {/* <Button className='bg-linear-to-r from-[#BC1823] to-[#3f060a]' label={'Take Me Home'} onClick={() => navigate('/')} /> */}
           </div>
         </div>
       </div>
@@ -61,3 +52,38 @@ const ErrorPage = () => {
 }
 
 export default ErrorPage
+// import React from "react";
+// import { Link, useRouteError } from "react-router";
+// // import Navbar from "../Components/Navbar";
+// // import Footer from "../Components/Footer";
+// import errorImage from "../assets/images/error.jpeg";
+
+// const ErrorPage = () => {
+//   const error = useRouteError();
+//   const isNotFound = error?.status === 404;
+//   return (
+//     <div className="flex flex-col min-h-screen">
+//       <Navbar />
+
+//       <div className="flex-1 flex flex-col items-center justify-center text-center bg-gray-50 px-4">
+//         <img className="w-[400px] h-[345px] mt-5" src={errorImage} alt="" />
+//         {/* <h2 className="text-2xl font-semibold mb-2">Oops! Page not found!</h2> */}
+//         <p className="text-gray-700 font-bold text-2xl mb-4">
+//           {isNotFound
+//             ? "The page you are looking is not available"
+//             : error?.message || "An unexpected error occurred"}
+//         </p>
+//         <Link
+//           to="/"
+//           className="btn rounded border-gray-300  btn-sm bg-linear-to-r from-[#BC1823] to-red-500 text-white"
+//         >
+//           Go Back Home
+//         </Link>
+//       </div>
+
+//       <Footer />
+//     </div>
+//   );
+// };
+
+// export default ErrorPage;

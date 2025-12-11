@@ -26,12 +26,12 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/available-foods" className="hover:text-teal-200">
+              <Link to="/about" className="hover:text-teal-200">
                 About
               </Link>
             </li>
             <li>
-              <Link to="/login" className="hover:text-teal-200">
+              <Link to="/services" className="hover:text-teal-200">
                 Services
               </Link>
             </li>
@@ -42,22 +42,27 @@ const Footer = () => {
           <h3 className="text-lg font-bold mb-4">Community</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="/" className="hover:text-teal-200">
+              <Link to="/events" className="hover:text-teal-200">
                 Events
               </Link>
             </li>
             <li>
-              <Link to="/" className="hover:text-teal-200">
+              <Link to="/donation-requests" className="hover:text-teal-200">
                 Donation Requests
               </Link>
             </li>
             <li>
-              <Link to="/" className="hover:text-teal-200">
+              <Link to="/search-donor" className="hover:text-teal-200">
+                Search Donor
+              </Link>
+            </li>
+            <li>
+              <Link to="/funding" className="hover:text-teal-200">
                 Funding
               </Link>
             </li>
             <li>
-              <Link to="/" className="hover:text-teal-200">
+              <Link to="/login" className="hover:text-teal-200">
                 Login
               </Link>
             </li>
@@ -94,7 +99,7 @@ const Footer = () => {
           </div>
           <div>
             <a
-              href="mailto:food@share.com"
+              href="mailto:bloodaid@gmail.com"
               className="flex items-center hover:text-teal-200"
             >
               <Mail size={18} className="mr-2" /> bloodaid@gmail.com

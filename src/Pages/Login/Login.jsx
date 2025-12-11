@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
@@ -10,6 +10,8 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const { user } = useAuth();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +31,8 @@ const Login = () => {
       setUploading(false);
     }
   };
+  if (user) return <Navigate to="/dashboard" replace />;
+
 
   return (
     <div className="flex justify-center items-center min-h-screen ">
