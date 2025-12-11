@@ -155,7 +155,7 @@ const DonationRequestForm = ({
   className={`btn ${
     disabled
       ? "opacity-50 cursor-not-allowed"
-      : "bg-red-600 text-white"
+      : " w-full bg-linear-to-r from-[#BC1823] to-[#3f060a] text-white cursor-pointer"
   }`}
 >
   Create Request

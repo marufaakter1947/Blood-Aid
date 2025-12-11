@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Mail } from "lucide-react";
-import logoImage from "../../../assets/images/Blood aid.png";
+// import logoImage from "../../../assets/images/Blood aid.png";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
@@ -11,11 +11,14 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
         <div className="flex flex-col items-center md:items-start">
           <div className="flex flex-col items-center md:items-start gap-2">
-            <img
+            {/* <img
               className="h-14 w-10 rounded-full"
               src={logoImage}
               alt="BloodAid Logo"
-            />
+            /> */}
+            <svg className="h-14 w-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+  <path d="../../../assets/images/Blood_aid-removebg.png" />
+</svg>
             <h3 className="text-lg font-bold">BloodAid</h3>
           </div>
           <ul className="space-y-2 mt-4">

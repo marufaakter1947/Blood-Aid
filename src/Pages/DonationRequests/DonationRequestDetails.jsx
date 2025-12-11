@@ -92,7 +92,7 @@ useEffect(() => {
   
 
   return (
-    <div className="p-6 max-w-3xl mx-auto rounded shadow mt-20">
+    <div className="p-6 max-w-3xl mx-auto rounded shadow pt-20">
       <h2 className="text-2xl font-bold text-red-600 mb-4">
         Donation Request Details
       </h2>

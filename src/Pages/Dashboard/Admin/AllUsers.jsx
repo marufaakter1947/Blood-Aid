@@ -146,7 +146,7 @@ const AllUsers = () => {
                           onClick={() =>
                             updateStatus(user.email, "blocked")
                           }
-                          className="dropdown-btn"
+                          className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Block User
                         </button>
@@ -155,7 +155,7 @@ const AllUsers = () => {
                           onClick={() =>
                             updateStatus(user.email, "active")
                           }
-                          className="dropdown-btn"
+                          className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Unblock User
                         </button>
@@ -166,7 +166,7 @@ const AllUsers = () => {
                           onClick={() =>
                             updateRole(user.email, "volunteer")
                           }
-                          className="dropdown-btn"
+                          className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Make Volunteer
                         </button>
@@ -175,7 +175,7 @@ const AllUsers = () => {
                       {user.role !== "admin" && (
                         <button
                           onClick={() => updateRole(user.email, "admin")}
-                          className="dropdown-btn"
+                          className="dropdown-btn text-left hover:bg-red-50"
                         >
                           Make Admin
                         </button>
