@@ -14,8 +14,8 @@ const bloodGroups = [
 
 const BloodGroups = () => {
   return (
-    <section className="bg-red-50 pt-10">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className=" rounded-xl  mt-10">
+      <div className=" px-4">
 
         {/* Section Header */}
         <div className="text-center mb-12">
