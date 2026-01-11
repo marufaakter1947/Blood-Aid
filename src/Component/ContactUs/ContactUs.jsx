@@ -17,7 +17,8 @@ const ContactUs = () => {
   };
 
   return (
-    <section
+    <section id="contact" >
+   <section
   className="relative min-h-[70vh] bg-cover bg-center bg-no-repeat  mx-4 rounded-xl overflow-hidden"
   style={{ backgroundImage: `url(${contactBg})` }}
 >
@@ -76,6 +77,9 @@ const ContactUs = () => {
         </div>
       </div>
     </section>
+</section>
+
+   
   );
 };
 

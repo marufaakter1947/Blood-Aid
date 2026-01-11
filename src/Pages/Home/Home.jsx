@@ -3,6 +3,7 @@
 import Banner from "../../Component/Banner/Banner"
 import BloodGroups from "../../Component/BloodGroups"
 import ContactUs from "../../Component/ContactUs/ContactUs"
+import FAQ from "../../Component/FAQ"
 import Featured from "../../Component/Featured/Featured"
 import HowItWorks from "../../Component/HowItWorks/HowItWorks"
 import Testimonials from "../../Component/Testimonials/Testimonials"
@@ -18,6 +19,7 @@ const Home = () => {
       <Featured></Featured>
       <ContactUs></ContactUs>
       <Testimonials></Testimonials>
+      <FAQ></FAQ>
     </div>
   )
 }
