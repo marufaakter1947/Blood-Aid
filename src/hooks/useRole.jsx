@@ -8,8 +8,8 @@ const useRole = (email) => {
     if (!email) return;
 
     axios
-      // .get(`https://blood-aid-server-one.vercel.app/users/role?email=${email}`)
-      .get(`http://localhost:5000/users/role?email=${email}`)
+      .get(`https://blood-aid-server-one.vercel.app/users/role?email=${email}`)
+      // .get(`http://localhost:5000/users/role?email=${email}`)
       .then((res) => {
         if (res.data.success) setRole(res.data.role);
       })

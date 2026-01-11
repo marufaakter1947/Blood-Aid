@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import contactBg from '../../assets/images/contact.jpg';
+import toast from 'react-hot-toast';
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -12,7 +13,7 @@ const ContactUs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    alert('Message sent!');
+    toast('Message sent!');
     setFormData({ name: '', email: '', message: '' });
   };
 
