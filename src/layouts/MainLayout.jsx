@@ -5,9 +5,13 @@ import Footer from '../Component/Shared/Footer/Footer'
 import Navbar from '../Component/Shared/Navbar/Navbar'
 const MainLayout = () => {
   return (
-    <div className='bg-red-50'>
+    // <div className='bg-red-50'>
+    <div className="bg-red-50 dark:bg-slate-900">
+
       <Navbar />
-      <div className=' min-h-[calc(100vh-68px)] mt-5 '>
+      {/* <div className=' min-h-[calc(100vh-68px)] mt-5 '> */}
+      <div className="min-h-[calc(100vh-68px)] mt-5 text-black dark:text-white">
+
         <Outlet />
       </div>
       <Footer></Footer>
