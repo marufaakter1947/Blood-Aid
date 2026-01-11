@@ -111,10 +111,10 @@ const Footer = () => {
       <div className="border-t border-[#fa7171] mt-8 pt-4 text-center text-sm">
         <p>© {currentYear} BloodAid. All Rights Reserved.</p>
         <p className="mt-2">
-          <Link to="/" className="hover:text-teal-200 mr-3">
+          <Link to="/privacy-policy" className="hover:text-teal-200 mr-3">
             Privacy Policy
           </Link>
-          <Link to="/" className="hover:text-teal-200">
+          <Link to="/terms-of-service" className="hover:text-teal-200">
             Terms of Service
           </Link>
         </p>

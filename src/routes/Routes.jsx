@@ -32,6 +32,8 @@ import DashboardIndex from '../Pages/Dashboard/DashboardIndex'
 import DonationRequest from "../Pages/DonationRequests/DonationRequest";
 import SearchDonorPage from "../Pages/SearchDonor/SearchDonor";
 import FundingSuccess from "../Pages/FundingSuccess";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
+import TermsOfService from "../Pages/TermsOfService";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -54,6 +56,9 @@ export const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/registration", element: <Registration /> },
       {path:"/search-donor", element:<SearchDonorPage />},
+      {path:"/privacy-policy", element:<PrivacyPolicy />},
+      {path:"/terms-of-service", element:<TermsOfService />},
+
 
       {
         path: "/funding",
